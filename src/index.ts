@@ -77,3 +77,5 @@ function printSample() {
     var pos = satellitePosition(satellites[0], time);
     console.log(pos);
 }
+
+window.addEventListener("load", () => makeRequest("gps-ops.txt"));

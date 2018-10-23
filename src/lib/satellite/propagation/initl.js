@@ -6,7 +6,6 @@ import {
 } from '../constants';
 
 import gstime from './gstime';
-import { InitLOptions } from '../types';
 
 /*-----------------------------------------------------------------------------
  *
@@ -58,7 +57,7 @@ import { InitLOptions } from '../types';
  *    hoots, schumacher and glover 2004
  *    vallado, crawford, hujsak, kelso  2006
  ----------------------------------------------------------------------------*/
-export default function initl(options: InitLOptions) {
+export default function initl(options) {
   const {
     ecco,
     epoch,

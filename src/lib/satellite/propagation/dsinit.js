@@ -4,7 +4,6 @@ import {
   xke,
   x2o3,
 } from '../constants';
-import { DSInitOptions } from '../types';
 
 /*-----------------------------------------------------------------------------
  *
@@ -85,7 +84,7 @@ import { DSInitOptions } from '../types';
  *    hoots, schumacher and glover 2004
  *    vallado, crawford, hujsak, kelso  2006
  ----------------------------------------------------------------------------*/
-export default function dsinit(options: DSInitOptions) {
+export default function dsinit(options) {
   const {
     cosim,
     argpo,

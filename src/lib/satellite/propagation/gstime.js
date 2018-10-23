@@ -30,7 +30,7 @@ import { jday } from '../ext';
  *  references    :
  *    vallado       2004, 191, eq 3-45
  * --------------------------------------------------------------------------- */
-function gstimeInternal(jdut1: number) {
+function gstimeInternal(jdut1) {
   const tut1 = (jdut1 - 2451545.0) / 36525.0;
 
   let temp =
@@ -47,15 +47,9 @@ function gstimeInternal(jdut1: number) {
   return temp;
 }
 
-// modified heavily
-export default function gstime(year: Date): number;
-export default function gstime(year: number, mon: number, day: number, hr: number, minute: number, sec: number, msec?: number): number;
-export default function gstime(jdut1: number): number;
-export default function gstime(first: number|Date, mon?: number, day?: number, hr?: number, minute?: number, sec?: number, msec?: number) {
-  if (first instanceof Date) {
-    return gstimeInternal(jday(first));
-  } else if (mon !== undefined) {
-    return gstimeInternal(jday(first, mon, day!, hr!, minute!, sec!, msec));
+export default function gstime(...args) {
+  if (args[0] instanceof Date || args.length > 1) {
+    return gstimeInternal(jday(...args));
   }
-  return gstimeInternal(first);
+  return gstimeInternal(...args);
 }

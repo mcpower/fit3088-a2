@@ -67,7 +67,15 @@ import { twoPi } from '../constants';
  *    hoots, schumacher and glover 2004
  *    vallado, crawford, hujsak, kelso  2006
  ----------------------------------------------------------------------------*/
-export default function dscom(options) {
+export default function dscom(options: {
+  epoch: number;
+  ep: number;
+  argpp: number;
+  tc: number;
+  inclp: number;
+  nodep: number;
+  np: number;
+}) {
   const {
     epoch,
     ep,

@@ -275,7 +275,10 @@ export default function sgp4init(satrec, options) {
 
   if (omeosq >= 0.0 || satrec.no >= 0.0) {
     satrec.isimp = 0;
-    if ((rp < 220.0 / earthRadius) + 1.0) {
+    // MICHAEL: not sure what this is?
+    // this feels like it's always true...
+    // update: https://github.com/brandon-rhodes/python-sgp4/blob/master/sgp4/propagation.py
+    if (rp < (220.0 / earthRadius + 1.0)) {
       satrec.isimp = 1;
     }
     sfour = ss;

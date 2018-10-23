@@ -13,6 +13,11 @@ import dsinit from './dsinit';
 import initl from './initl';
 import sgp4 from './sgp4';
 
+import {
+  SatRec,
+  SGP4Options
+} from '../types';
+
 /*-----------------------------------------------------------------------------
  *
  *                             procedure sgp4init
@@ -94,7 +99,7 @@ import sgp4 from './sgp4';
  *    hoots, schumacher and glover 2004
  *    vallado, crawford, hujsak, kelso  2006
  ----------------------------------------------------------------------------*/
-export default function sgp4init(satrec, options) {
+export default function sgp4init(satrec: SatRec, options: SGP4Options) {
   /* eslint-disable no-param-reassign */
 
   const {
@@ -273,9 +278,12 @@ export default function sgp4init(satrec, options) {
   //   satrec.error = 5;
   // }
 
-  if (omeosq >= 0.0 || satrec.no >= 0.0) {
+  if (omeosq >= 0.0 || satrec.no! >= 0.0) {
     satrec.isimp = 0;
-    if ((rp < 220.0 / earthRadius) + 1.0) {
+    // MICHAEL: not sure what this is?
+    // this feels like it's always true...
+    // update: https://github.com/brandon-rhodes/python-sgp4/blob/master/sgp4/propagation.py
+    if (rp < (220.0 / earthRadius + 1.0)) {
       satrec.isimp = 1;
     }
     sfour = ss;
@@ -303,16 +311,16 @@ export default function sgp4init(satrec, options) {
     psisq = Math.abs(1.0 - etasq);
     coef = qzms24 * (tsi ** 4.0);
     coef1 = coef / (psisq ** 3.5);
-    cc2 = coef1 * satrec.no * ((ao * (1.0 + (1.5 * etasq) + (eeta * (4.0 + etasq)))) +
+    cc2 = coef1 * satrec.no! * ((ao * (1.0 + (1.5 * etasq) + (eeta * (4.0 + etasq)))) +
       (((0.375 * j2 * tsi) / psisq) * satrec.con41 *
         (8.0 + (3.0 * etasq * (8.0 + etasq)))));
     satrec.cc1 = satrec.bstar * cc2;
     cc3 = 0.0;
     if (satrec.ecco > 1.0e-4) {
-      cc3 = (-2.0 * coef * tsi * j3oj2 * satrec.no * sinio) / satrec.ecco;
+      cc3 = (-2.0 * coef * tsi * j3oj2 * satrec.no! * sinio) / satrec.ecco;
     }
     satrec.x1mth2 = 1.0 - cosio2;
-    satrec.cc4 = 2.0 * satrec.no * coef1 * ao * omeosq * (
+    satrec.cc4 = 2.0 * satrec.no! * coef1 * ao * omeosq * (
       ((satrec.eta * (2.0 + (0.5 * etasq))) +
         (satrec.ecco * (0.5 + (2.0 * etasq)))) -
       (((j2 * tsi) / (ao * psisq)) *
@@ -323,10 +331,10 @@ export default function sgp4init(satrec, options) {
     );
     satrec.cc5 = 2.0 * coef1 * ao * omeosq * (1.0 + (2.75 * (etasq + eeta)) + (eeta * etasq));
     cosio4 = cosio2 * cosio2;
-    temp1 = 1.5 * j2 * pinvsq * satrec.no;
+    temp1 = 1.5 * j2 * pinvsq * satrec.no!;
     temp2 = 0.5 * temp1 * j2 * pinvsq;
-    temp3 = -0.46875 * j4 * pinvsq * pinvsq * satrec.no;
-    satrec.mdot = satrec.no + (0.5 * temp1 * rteosq * satrec.con41) +
+    temp3 = -0.46875 * j4 * pinvsq * pinvsq * satrec.no!;
+    satrec.mdot = satrec.no! + (0.5 * temp1 * rteosq * satrec.con41) +
       (0.0625 * temp2 * rteosq * ((13.0 - (78.0 * cosio2)) + (137.0 * cosio4)));
     satrec.argpdot = (-0.5 * temp1 * con42) +
       (0.0625 * temp2 * ((7.0 - (114.0 * cosio2)) + (395.0 * cosio4))) +
@@ -358,7 +366,7 @@ export default function sgp4init(satrec, options) {
     satrec.x7thm1 = (7.0 * cosio2) - 1.0;
 
     // --------------- deep space initialization -------------
-    if ((2 * pi) / satrec.no >= 225.0) {
+    if ((2 * pi) / satrec.no! >= 225.0) {
       satrec.method = 'd';
       satrec.isimp = 1;
       tc = 0.0;
@@ -645,7 +653,10 @@ export default function sgp4init(satrec, options) {
     // if(satrec.error == 0)
   }
 
-  sgp4(satrec, 0, 0);
+  // MICHAEL: why are there three arguments here?
+  // sgp4(satrec, 0, 0);
+  sgp4(satrec, 0);
+
 
   satrec.init = 'n';
 

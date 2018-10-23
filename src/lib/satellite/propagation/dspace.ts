@@ -1,4 +1,5 @@
 import { twoPi } from '../constants';
+import { SatRec, DSpaceOptions } from '../types';
 
 /*-----------------------------------------------------------------------------
  *
@@ -72,7 +73,7 @@ import { twoPi } from '../constants';
  *    hoots, schumacher and glover 2004
  *    vallado, crawford, hujsak, kelso  2006
  ----------------------------------------------------------------------------*/
-export default function dspace(options) {
+export default function dspace(options: DSpaceOptions) {
   const {
     irez,
     d2201,
@@ -132,9 +133,9 @@ export default function dspace(options) {
   let x2li;
   let x2omi;
   let xl;
-  let xldot;
-  let xnddt;
-  let xndt;
+  let xldot: number;
+  let xnddt: number;
+  let xndt: number;
   let xomi;
   let dndt = 0.0;
   let ft = 0.0;
@@ -242,8 +243,8 @@ export default function dspace(options) {
       }
     }
 
-    nm = xni + (xndt * ft) + (xnddt * ft * ft * 0.5);
-    xl = xli + (xldot * ft) + (xndt * ft * ft * 0.5);
+    nm = xni + (xndt! * ft) + (xnddt! * ft * ft * 0.5);
+    xl = xli + (xldot! * ft) + (xndt! * ft * ft * 0.5);
     if (irez !== 1) {
       mm = (xl - (2.0 * nodem)) + (2.0 * theta);
       dndt = nm - no;

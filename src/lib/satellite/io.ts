@@ -11,6 +11,11 @@ import {
 
 import sgp4init from './propagation/sgp4init';
 
+import {
+  SatRec,
+  SGP4Options
+} from './types';
+
 /* -----------------------------------------------------------------------------
  *
  *                           function twoline2rv
@@ -66,12 +71,12 @@ import sgp4init from './propagation/sgp4init';
  * to the algorithm.  If you want to turn some of these off and go
  * back into "afspc" mode, then set `afspc_mode` to `True`.
  */
-export default function twoline2satrec(longstr1, longstr2) {
+export default function twoline2satrec(longstr1: string, longstr2: string) {
   const opsmode = 'i';
   const xpdotp = 1440.0 / (2.0 * pi); // 229.1831180523293;
   let year = 0;
 
-  const satrec = {};
+  const satrec: SatRec = {};
   satrec.error = 0;
 
   satrec.satnum = longstr1.substring(2, 7);

@@ -34,7 +34,7 @@
  *  coupling      :
  *    none.
  * --------------------------------------------------------------------------- */
-export function days2mdhms(year, days) {
+export function days2mdhms(year: number, days: number) {
   const lmonth = [31, (year % 4) === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const dayofyr = Math.floor(days);
 
@@ -97,7 +97,7 @@ export function days2mdhms(year, days) {
  *    vallado       2007, 189, alg 14, ex 3-14
  *
  * --------------------------------------------------------------------------- */
-function jdayInternal(year, mon, day, hr, minute, sec, msec = 0) {
+function jdayInternal(year: number, mon: number, day: number, hr: number, minute: number, sec: number, msec: number = 0) {
   return (
     ((367.0 * year) - Math.floor((7 * (year + Math.floor((mon + 9) / 12.0))) * 0.25)) +
     Math.floor((275 * mon) / 9.0) +
@@ -107,7 +107,9 @@ function jdayInternal(year, mon, day, hr, minute, sec, msec = 0) {
   );
 }
 
-export function jday(year, mon, day, hr, minute, sec, msec) {
+export function jday(year: Date): number;
+export function jday(year: number, mon: number, day: number, hr: number, minute: number, sec: number, msec?: number): number;
+export function jday(year: number|Date, mon?: number, day?: number, hr?: number, minute?: number, sec?: number, msec?: number) {
   if (year instanceof Date) {
     const date = year;
     return jdayInternal(
@@ -121,7 +123,7 @@ export function jday(year, mon, day, hr, minute, sec, msec) {
     );
   }
 
-  return jdayInternal(year, mon, day, hr, minute, sec, msec);
+  return jdayInternal(year, mon!, day!, hr!, minute!, sec!, msec);
 }
 
 /* -----------------------------------------------------------------------------
@@ -163,7 +165,7 @@ export function jday(year, mon, day, hr, minute, sec, msec) {
  *  references    :
  *    vallado       2007, 208, alg 22, ex 3-13
  * --------------------------------------------------------------------------- */
-export function invjday(jd, asArray) {
+export function invjday(jd: number, asArray: boolean = false): Date|[number,number,number,number,number,number] {
   // --------------- find year and days of the year -
   const temp = jd - 2415019.5;
   const tu = temp / 365.25;

@@ -2,7 +2,7 @@
 //  initShaders.js
 //
 
-function initShaders( gl: WebGLRenderingContext, vertexShaderSource: string, fragmentShaderSource: string ): WebGLProgram | undefined
+export default function initShaders( gl: WebGLRenderingContext, vertexShaderSource: string, fragmentShaderSource: string ): WebGLProgram | undefined
 {
     const vertShdr = gl.createShader( gl.VERTEX_SHADER )!;
     gl.shaderSource( vertShdr, vertexShaderSource );

@@ -11,7 +11,8 @@ var satellites: Sat[] = [];
 
 // parses a series of TLE records describing the position and movement of satellites
 function parseSatellites(tleStrings: string) {
-    var lines = tleStrings.split("\r");
+    // need to make this a regex
+    var lines = tleStrings.split(/\r?\n/);
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].trim();
         if (line.length === 0) {

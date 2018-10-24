@@ -1,34 +1,44 @@
 import Context from "./Context";
 import initShaders from "../lib/initShaders";
 
+/**
+ * A WebGLProgram associated with a WebGLRenderingContext.
+ * This class is intended to be subclassed.
+ */
 export default class Program {
-    parentContext: Context;
+    gl: WebGLRenderingContext;
     program: WebGLProgram;
 
     /**
-     * Automatically adds itself to the parent context's programs.
+     * Constructor.
      */
     constructor(
-        parentContext: Context,
+        gl: WebGLRenderingContext,
         program: WebGLProgram,
     ) {
-        this.parentContext = parentContext;
+        this.gl = gl;
         this.program = program;
-
-        parentContext.programs.push(this);
     }
 
+    /**
+     * Renders the program, assuming the WebGLRenderingContext has been
+     * switched to use it.
+     */
     render() {
 
     }
 
+    /**
+     * Creates a Program from shader strings.
+     * Currently useless - subclass Program instead.
+     */
     static fromShaders(
-        parentContext: Context,
+        gl: WebGLRenderingContext,
         vertexShader: string,
         fragmentShader: string,
     ) {
-        const prog = initShaders(parentContext.gl, vertexShader, fragmentShader);
+        const prog = initShaders(gl, vertexShader, fragmentShader);
 
-        return new Program(parentContext, prog);
+        return new Program(gl, prog);
     }
 }

@@ -98,7 +98,7 @@ namespace WebGLUtils {
    *     if there is an error during creation.
    * @return {WebGLRenderingContext} The created context.
    */
-  export function setupWebGL(canvas: HTMLCanvasElement, opt_attribs: WebGLContextAttributes, opt_onError: (_: string) => void) {
+  export function setupWebGL(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes, opt_onError?: (_: string) => void) {
     function handleCreationError(msg: string) {
       var container = document.getElementsByTagName("body")[0];
       //var container = canvas.parentNode;
@@ -117,7 +117,7 @@ namespace WebGLUtils {
 
     if (canvas.addEventListener) {
       canvas.addEventListener("webglcontextcreationerror", function (event) {
-        opt_onError((<any>event).statusMessage);
+        opt_onError!((<any>event).statusMessage);
       }, false);
     }
     var context = create3DContext(canvas, opt_attribs);
@@ -138,7 +138,7 @@ namespace WebGLUtils {
    *     from. If one is not passed in one will be created.
    * @return {!WebGLContext} The created context.
    */
-  export function create3DContext(canvas: HTMLCanvasElement, opt_attribs: WebGLContextAttributes): WebGLRenderingContext | null {
+  export function create3DContext(canvas: HTMLCanvasElement, opt_attribs?: WebGLContextAttributes): WebGLRenderingContext | null {
     var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
     var context: WebGLRenderingContext | null = null;
     for (var ii = 0; ii < names.length; ++ii) {

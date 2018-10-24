@@ -1,5 +1,6 @@
 import Context from "./Context";
 import initShaders from "../lib/initShaders";
+import { Matrix } from "../lib/MV";
 
 /**
  * A WebGLProgram associated with a WebGLRenderingContext.
@@ -24,7 +25,7 @@ export default class Program {
      * Renders the program, assuming the WebGLRenderingContext has been
      * switched to use it.
      */
-    render() {
+    render(globalModel: Matrix, globalView: Matrix, globalProjection: Matrix) {
 
     }
 

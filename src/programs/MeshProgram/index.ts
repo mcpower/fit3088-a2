@@ -4,6 +4,7 @@ import Context from "../../classes/Context";
 import initShaders from "../../lib/initShaders";
 import vertexShader from "./vertex.glsl";
 import fragmentShader from "./fragment.glsl";
+import { Matrix } from "../../lib/MV";
 
 export default class MeshProgram extends Program {
     mesh: Mesh;
@@ -15,6 +16,6 @@ export default class MeshProgram extends Program {
         this.mesh = mesh;
     }
 
-    render() {
+    render(globalModel: Matrix, globalView: Matrix, globalProjection: Matrix) {
     }
 }

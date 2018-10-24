@@ -25,7 +25,7 @@ export function radians(degrees: number) {
 //  Vector Constructors
 //
 
-interface Vector extends Array<number> {
+export interface Vector extends Array<number> {
     matrix?: undefined;
 }
 
@@ -82,7 +82,7 @@ function vec4(...args: (number|Vector)[])
 //  Matrix Constructors
 //
 
-interface Matrix extends Array<Vector> {
+export interface Matrix extends Array<Vector> {
     matrix?: boolean;
 }
 

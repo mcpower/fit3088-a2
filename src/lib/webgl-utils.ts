@@ -127,6 +127,7 @@ namespace WebGLUtils {
       } else {
         opt_onError("");
       }
+      throw new Error("");
     }
 
     return context;

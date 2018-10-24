@@ -4,10 +4,10 @@ type Vec2 = [number, number];
 type Vec3 = [number, number, number];
 type TriangleIndices = Vec3;
 
+/**
+ * A general mesh, not associated with any program.
+ */
 export default class Mesh {
-    /**
-     * A mesh which is not associated with any specific GL program / context.
-     */
     vertices: Vec3[];
     normals: Vec3[];
     indices: TriangleIndices[];
@@ -25,6 +25,10 @@ export default class Mesh {
         this.texCoords = texCoords;
     }
 
+    /**
+     * Creates a sphere mesh.
+     * @param rows Number of "rows" of rectangles in the generated mesh.
+     */
     static makeSphere(rows: number): Mesh {
         const columns = rows * 2;
 

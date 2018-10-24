@@ -1,6 +1,10 @@
 import Program from "./Program";
 import WebGLUtils from "../lib/webgl-utils";
 
+/**
+ * The WebGLRenderingContext and all related rendering.
+ * Contains a list of Programs which can be rendered.
+ */
 export default class Context {
     gl: WebGLRenderingContext;
     programs: Program[];

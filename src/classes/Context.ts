@@ -3,7 +3,7 @@ import WebGLUtils from "../lib/webgl-utils";
 
 export default class Context {
     gl: WebGLRenderingContext;
-    programs: Program<any, any>[];
+    programs: Program[];
 
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;

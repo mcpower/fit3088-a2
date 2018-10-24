@@ -2,7 +2,7 @@
 //  initShaders.js
 //
 
-export default function initShaders( gl: WebGLRenderingContext, vertexShaderSource: string, fragmentShaderSource: string ): WebGLProgram | undefined
+export default function initShaders( gl: WebGLRenderingContext, vertexShaderSource: string, fragmentShaderSource: string ): WebGLProgram
 {
     const vertShdr = gl.createShader( gl.VERTEX_SHADER )!;
     gl.shaderSource( vertShdr, vertexShaderSource );
@@ -11,7 +11,7 @@ export default function initShaders( gl: WebGLRenderingContext, vertexShaderSour
         var msg = "Vertex shader failed to compile.  The error log is:"
         + "<pre>" + gl.getShaderInfoLog( vertShdr ) + "</pre>";
         alert( msg );
-        return;
+        throw new Error(msg);
     }
 
     const fragShdr = gl.createShader( gl.FRAGMENT_SHADER )!;
@@ -21,7 +21,7 @@ export default function initShaders( gl: WebGLRenderingContext, vertexShaderSour
         var msg = "Fragment shader failed to compile.  The error log is:"
         + "<pre>" + gl.getShaderInfoLog( fragShdr ) + "</pre>";
         alert( msg );
-        return;
+        throw new Error(msg);
     }
 
     var program = gl.createProgram()!;
@@ -33,7 +33,7 @@ export default function initShaders( gl: WebGLRenderingContext, vertexShaderSour
         var msg = "Shader program failed to link.  The error log is:"
             + "<pre>" + gl.getProgramInfoLog( program ) + "</pre>";
         alert( msg );
-        return;
+        throw new Error(msg);
     }
 
     return program;

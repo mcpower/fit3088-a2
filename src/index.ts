@@ -37,7 +37,7 @@ function satellitePosition(sat: Sat, time: Date) {
     var satrec = satellite.twoline2satrec(sat.tle1, sat.tle2);
     var positionAndVelocity = satellite.propagate(satrec, time);
     if (positionAndVelocity instanceof Array || positionAndVelocity.position === false) {
-        throw Error("Propagation failed.");
+        throw new Error("Propagation failed.");
     }
     var gmst = satellite.gstime(time);
     // ECI coordinates

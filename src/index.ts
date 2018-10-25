@@ -6,6 +6,8 @@ import Context from "./classes/Context";
 import MeshProgram from "./programs/MeshProgram";
 import { mat4, scalem } from "./lib/MV";
 import * as MV from "./lib/MV";
+import EarthProgram from "./programs/EarthProgram";
+import DateStore from "./classes/DateStore";
 
 interface Sat {
     name: string;
@@ -88,8 +90,6 @@ function printSample() {
 
 // window.addEventListener("load", () => makeRequest("gps-ops.txt"));
 
-// console.log(Mesh.makeSphere(16));
-
 window.addEventListener("load", () => {
     const canvas = <HTMLCanvasElement>document.getElementById("gl-canvas");
     
@@ -97,6 +97,7 @@ window.addEventListener("load", () => {
     // const prog = Program.fromShaders(context.gl, "", "");
 
     OBJ.downloadMeshes({"model": "satellite.obj"}, (mesh) => {
+        return;
         const m = Mesh.fromObj(mesh.model);
         // const m = Mesh.makeSphere(16);
         console.log("satellite:", m);
@@ -105,10 +106,13 @@ window.addEventListener("load", () => {
         context.programs.push(mp);
     });
 
+    const ds = new DateStore();
+    const ep = new EarthProgram(context.gl, ds, 0.5);
+    context.programs.push(ep);
+
     console.log(context.gl);
 
     console.log(context);
 
     context.render();
-    console.log(MV.mat4())
 })

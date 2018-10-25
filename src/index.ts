@@ -3,6 +3,9 @@ import * as OBJ from "./lib/webgl-obj-loader";
 import Mesh from "./classes/Mesh";
 import Program from "./classes/Program";
 import Context from "./classes/Context";
+import MeshProgram from "./programs/MeshProgram";
+import { mat4, scalem } from "./lib/MV";
+import * as MV from "./lib/MV";
 
 interface Sat {
     name: string;
@@ -83,22 +86,29 @@ function printSample() {
     console.log(pos);
 }
 
-window.addEventListener("load", () => makeRequest("gps-ops.txt"));
+// window.addEventListener("load", () => makeRequest("gps-ops.txt"));
 
-OBJ.downloadMeshes({"model": "satellite.obj"}, (mesh) => {
-    console.log("satellite:", mesh.model);
-});
-
-console.log(Mesh.makeSphere(16));
+// console.log(Mesh.makeSphere(16));
 
 window.addEventListener("load", () => {
     const canvas = <HTMLCanvasElement>document.getElementById("gl-canvas");
     
     const context = Context.fromCanvas(canvas);
     // const prog = Program.fromShaders(context.gl, "", "");
+
+    OBJ.downloadMeshes({"model": "satellite.obj"}, (mesh) => {
+        const m = Mesh.fromObj(mesh.model);
+        // const m = Mesh.makeSphere(16);
+        console.log("satellite:", m);
+        const mp = new MeshProgram(context.gl, m);
+        mp.transforms.push(scalem(0.1, 0.1, 0.1));
+        context.programs.push(mp);
+    });
+
     console.log(context.gl);
 
     console.log(context);
 
     context.render();
+    console.log(MV.mat4())
 })

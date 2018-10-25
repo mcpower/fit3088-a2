@@ -6,8 +6,6 @@ import vertexShader from "./vertex.glsl";
 import fragmentShader from "./fragment.glsl";
 import { Matrix } from "../../lib/MV";
 import Buffer from "../../classes/Buffer";
-// flatten from MV.js also works here
-import { flatten } from "../../utils";
 import * as MV from "../../lib/MV";
 
 /**
@@ -54,7 +52,10 @@ export default class MeshProgram extends Program {
         this.indexBuffer.bind();
 
         // We're always going to have the same projection matrix.
-        gl.uniformMatrix4fv(this.u_projectionMatrix, false, flatten(globalProjection));
+        gl.uniformMatrix4fv(this.u_projectionMatrix, false, MV.flatten(globalProjection));
+        // const modelView = MV.mult(globalView, globalModel);
+        // gl.uniformMatrix4fv(this.u_modelViewMatrix, false, MV.flatten(modelView));
+        // gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, this.indexBuffer.type, 0);
 
 
         this.transforms.forEach(model => {
@@ -65,10 +66,9 @@ export default class MeshProgram extends Program {
             const combinedModel = MV.mult(globalModel, model);
             const modelView = MV.mult(globalView, combinedModel);
 
-            gl.uniformMatrix4fv(this.u_modelViewMatrix, false, flatten(modelView));
-
+            gl.uniformMatrix4fv(this.u_modelViewMatrix, false, MV.flatten(modelView));
 
             gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, this.indexBuffer.type, 0);
-        })
+        });
     }
 }

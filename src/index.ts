@@ -1,4 +1,8 @@
-import * as satellite from "./lib/satellite"
+import * as satellite from "./lib/satellite";
+import * as OBJ from "./lib/webgl-obj-loader";
+import Mesh from "./classes/Mesh";
+import Program from "./classes/Program";
+import Context from "./classes/Context";
 
 interface Sat {
     name: string;
@@ -80,3 +84,21 @@ function printSample() {
 }
 
 window.addEventListener("load", () => makeRequest("gps-ops.txt"));
+
+OBJ.downloadMeshes({"model": "satellite.obj"}, (mesh) => {
+    console.log("satellite:", mesh.model);
+});
+
+console.log(Mesh.makeSphere(16));
+
+window.addEventListener("load", () => {
+    const canvas = <HTMLCanvasElement>document.getElementById("gl-canvas");
+    
+    const context = Context.fromCanvas(canvas);
+    // const prog = Program.fromShaders(context.gl, "", "");
+    console.log(context.gl);
+
+    console.log(context);
+
+    context.render();
+})

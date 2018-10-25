@@ -29,7 +29,7 @@ export interface Vector extends Array<number> {
     matrix?: undefined;
 }
 
-function vec2(...args: (number|Vector)[])
+export function vec2(...args: (number|Vector)[])
 {
     var result = _argumentsToArray(args);
 
@@ -43,7 +43,7 @@ function vec2(...args: (number|Vector)[])
     return <Vector> result.splice(0, 2);
 }
 
-function vec3(...args: (number|Vector)[])
+export function vec3(...args: (number|Vector)[])
 {
     var result = _argumentsToArray(args);
 
@@ -59,7 +59,7 @@ function vec3(...args: (number|Vector)[])
     return <Vector> result.splice(0, 3);
 }
 
-function vec4(...args: (number|Vector)[])
+export function vec4(...args: (number|Vector)[])
 {
     var result = _argumentsToArray(args);
 

@@ -1,4 +1,4 @@
-export default class Buffer<T extends ArrayBuffer | ArrayBufferView> {
+export default class Buffer {
     gl: WebGLRenderingContext
     buffer: WebGLBuffer;
     // gl.ARRAY_BUFFER, gl.ELEMENT_ARRAY_BUFFER, etc.
@@ -7,7 +7,7 @@ export default class Buffer<T extends ArrayBuffer | ArrayBufferView> {
     type: GLenum;
     size?: GLint;
 
-    constructor(gl: WebGLRenderingContext, data: T, target: GLenum, type: GLenum, size?: GLint) {
+    constructor(gl: WebGLRenderingContext, data: ArrayBuffer | ArrayBufferView, target: GLenum, type: GLenum, size?: GLint) {
         this.gl = gl;
         const buffer = gl.createBuffer();
         if (buffer === null) {

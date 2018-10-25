@@ -100,7 +100,7 @@ export default class Mesh {
             for (let col = 0; col <= columns; col++) {
                 // We start off "from the back".
                 // TODO: offset this by 1/2 a "notch"
-                const lon = (Math.PI * col / columns) - (Math.PI / 2);
+                const lon = (2 * Math.PI * col / columns) - (Math.PI / 2);
 
                 // If lon = 0, z should be 1 and x = 0.
                 // Therefore, z is cos, and x is sin!
@@ -110,8 +110,9 @@ export default class Mesh {
                 vertexRow.push([x, y, z]);
 
                 // Now, what are the texture coordinates?
-                const texU = row / rows;
-                const texV = col / columns;
+                // Remember that the BOTTOM LEFT is (0, 0)!
+                const texU = col / columns;
+                const texV = 1 - (row / rows);
                 texRow.push([texU, texV]);
             }
             vertices.push(vertexRow);
@@ -160,6 +161,14 @@ export default class Mesh {
     }
 
     static makeCube(): Mesh {
+        // Create a cube
+        //    v6----- v5
+        //   /|      /|
+        //  v1------v0|
+        //  | |     | |
+        //  | |v7---|-|v4
+        //  |/      |/
+        //  v2------v3
         var vertices = ([// Vertex coordinates
             1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, // v0-v1-v2-v3 front
             1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, // v0-v3-v4-v5 right

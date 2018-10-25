@@ -107,8 +107,8 @@ export default class EarthProgram extends Program {
         });
     }
 
-    updateBlend(height: number = 128) {
-        const width = height;
+    updateBlend(height: number = 64) {
+        const width = height * 2;
         let arr = new Uint8Array(width * height);
         const now = this.dateStore.date;
 
@@ -174,8 +174,8 @@ export default class EarthProgram extends Program {
                 //     val = 0;
                 // }
 
-                arr[y * height + x] = now < sunrise || now > sunset ? 0 : 255;
-                arr[y * height + x] = val;
+                arr[y * width + x] = now < sunrise || now > sunset ? 0 : 255;
+                arr[y * width + x] = val;
             }
         }
 

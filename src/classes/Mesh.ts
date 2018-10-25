@@ -1,4 +1,5 @@
 import {flattenWithLookup, flatten} from "../utils";
+import Buffer from "./Buffer";
 
 type Vec2 = [number, number];
 type Vec3 = [number, number, number];
@@ -23,6 +24,23 @@ export default class Mesh {
         this.normals = normals;
         this.indices = indices;
         this.texCoords = texCoords;
+    }
+
+    getVertexBuffer(gl: WebGLRenderingContext) {
+        return new Buffer(gl, new Float32Array(flatten(this.vertices)), gl.ARRAY_BUFFER, gl.FLOAT, 3);
+    }
+
+    getNormalBuffer(gl: WebGLRenderingContext) {
+        return new Buffer(gl, new Float32Array(flatten(this.normals)), gl.ARRAY_BUFFER, gl.FLOAT, 3);
+    }
+
+    getIndexBuffer(gl: WebGLRenderingContext) {
+        // hopefully Uint16s are enough
+        return new Buffer(gl, new Uint16Array(flatten(this.vertices)), gl.ELEMENT_ARRAY_BUFFER, gl.UNSIGNED_SHORT);        
+    }
+
+    getTexCoordBuffer(gl: WebGLRenderingContext) {
+        return new Buffer(gl, new Float32Array(flatten(this.texCoords)), gl.ARRAY_BUFFER, gl.FLOAT, 2);
     }
 
     /**

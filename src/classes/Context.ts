@@ -1,6 +1,7 @@
 import Program from "./Program";
 import WebGLUtils from "../lib/webgl-utils";
-import { Matrix } from "../lib/MV";
+import * as MV from "../lib/MV";
+import { vec3, Matrix } from "../lib/MV";
 
 /**
  * The WebGLRenderingContext and all related rendering.
@@ -17,6 +18,21 @@ export default class Context {
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;
         this.programs = [];
+
+        const fov = 70;
+
+        this.model = MV.scalem(1, 1, 1);
+        this.view = MV.lookAt(
+            vec3(0, 0, 1 / Math.tan(fov / 180 * Math.PI / 2)),
+            vec3(0, 0, 0),
+            vec3(0, 1, 0)
+        );
+        this.projection = MV.perspective(
+            fov,
+            gl.drawingBufferWidth / gl.drawingBufferHeight,
+            0.1,
+            50
+        );
     }
 
     render = () => {

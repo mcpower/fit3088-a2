@@ -12,7 +12,11 @@ void main() {
     vec4 mvPos = u_modelViewMatrix * vPos; 
     gl_Position = u_projectionMatrix * mvPos;
 
+    // light position is hard-coded
     v_lightVector = normalize(vec3(1.0, 1.0, 1.0) - mvPos.xyz);
     v_eyeVector = normalize(-mvPos.xyz);
+    // we aren't doing any shearing / nonuniform scaling
+    // so we can do this instead.
+    // make sure to set a_normal's last component to be zero!
     v_normal = normalize((u_modelViewMatrix * vec4(a_normal, 0)).xyz);
 }

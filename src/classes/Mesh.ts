@@ -1,5 +1,6 @@
 import {flattenWithLookup, flatten} from "../utils";
 import Buffer from "./Buffer";
+import OBJ from "../lib/webgl-obj-loader";
 
 type Vec2 = [number, number];
 type Vec3 = [number, number, number];
@@ -9,38 +10,43 @@ type TriangleIndices = Vec3;
  * A general mesh, not associated with any program.
  */
 export default class Mesh {
-    vertices: Vec3[];
-    normals: Vec3[];
-    indices: TriangleIndices[];
-    texCoords: Vec2[];
-
     constructor(
-        vertices: Vec3[],
-        normals: Vec3[],
-        indices: TriangleIndices[],
-        texCoords: Vec2[]
+        public vertices: number[],
+        public normals: number[],
+        public indices: number[],
+        public texCoords: number[]
     ) {
-        this.vertices = vertices;
-        this.normals = normals;
-        this.indices = indices;
-        this.texCoords = texCoords;
+
     }
 
     getVertexBuffer(gl: WebGLRenderingContext) {
-        return new Buffer(gl, new Float32Array(flatten(this.vertices)), gl.ARRAY_BUFFER, gl.FLOAT, 3);
+        return new Buffer(gl, new Float32Array(this.vertices), gl.ARRAY_BUFFER, gl.FLOAT, 3);
     }
 
     getNormalBuffer(gl: WebGLRenderingContext) {
-        return new Buffer(gl, new Float32Array(flatten(this.normals)), gl.ARRAY_BUFFER, gl.FLOAT, 3);
+        return new Buffer(gl, new Float32Array(this.normals), gl.ARRAY_BUFFER, gl.FLOAT, 3);
     }
 
     getIndexBuffer(gl: WebGLRenderingContext) {
         // hopefully Uint16s are enough
-        return new Buffer(gl, new Uint16Array(flatten(this.vertices)), gl.ELEMENT_ARRAY_BUFFER, gl.UNSIGNED_SHORT);        
+        return new Buffer(gl, new Uint16Array(this.vertices), gl.ELEMENT_ARRAY_BUFFER, gl.UNSIGNED_SHORT);        
     }
 
     getTexCoordBuffer(gl: WebGLRenderingContext) {
-        return new Buffer(gl, new Float32Array(flatten(this.texCoords)), gl.ARRAY_BUFFER, gl.FLOAT, 2);
+        return new Buffer(gl, new Float32Array(this.texCoords), gl.ARRAY_BUFFER, gl.FLOAT, 2);
+    }
+
+    static fromTyped(
+        vertices: Vec3[],
+        normals: Vec3[],
+        indices: TriangleIndices[],
+        texCoords: Vec2[]
+    ): Mesh {
+        return new Mesh(flatten(vertices), flatten(normals), flatten(indices), flatten(texCoords));
+    }
+
+    static fromObj(obj: OBJ.Mesh): Mesh {
+        return new Mesh(obj.vertices, obj.vertexNormals, obj.indices, obj.textures);
     }
 
     /**
@@ -150,6 +156,6 @@ export default class Mesh {
             }
         }
          
-        return new Mesh(flattenedVertices, flattenedVertices, indices, flattenedTexCoords);
+        return Mesh.fromTyped(flattenedVertices, flattenedVertices, indices, flattenedTexCoords);
     }
 }

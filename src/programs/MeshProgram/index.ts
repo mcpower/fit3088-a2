@@ -44,7 +44,7 @@ export default class MeshProgram extends Program {
         this.transforms.forEach(model => {
             // calculate matrices
             // we'd rather calculate matrices in JS than on the GPU
-            gl.drawElements(gl.TRIANGLES, this.mesh.indices.length * 3, this.indexBuffer.type, 0);
+            gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, this.indexBuffer.type, 0);
         })
     }
 }

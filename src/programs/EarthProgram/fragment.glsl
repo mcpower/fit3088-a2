@@ -28,7 +28,8 @@ void main() {
     vec3 displayColor = mix(nightColor, dayColor, blend);
 
     // note that no specular is needed
-    gl_FragColor = vec4(u_ambient + diffuseFactor * displayColor, 1.0);
+    // let's tone down diffuseFactor by a bit
+    gl_FragColor = vec4((0.4 + 0.6 * diffuseFactor) * displayColor, 1.0);
     // gl_FragColor = vec4(blend, blend, blend, 1.0);
     // gl_FragColor = vec4(dayColor, 1.0);
     // gl_FragColor = vec4(0.5, 0.0, 0.0, 1.0);

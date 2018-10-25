@@ -55,6 +55,8 @@ export default class EarthProgram extends Program {
     indexCount: number;
 
     dateStore: DateStore;
+    
+    updateBlendCount: number;
 
     /**
      * Constructor.
@@ -65,12 +67,13 @@ export default class EarthProgram extends Program {
         const prog = initShaders(gl, vertexShader, fragmentShader);
         super(gl, prog);
 
+        this.updateBlendCount = 0;
         this.dateStore = dateStore;
 
         this.radius = radius;
         this.scaleMatrix = MV.scalem(radius, radius, radius);
 
-        const mesh = Mesh.makeSphere(16);
+        const mesh = Mesh.makeSphere(32);
         // const mesh = Mesh.makeCube();
         this.indexCount = mesh.indices.length;
 
@@ -93,8 +96,6 @@ export default class EarthProgram extends Program {
         this.u_samplerNight = gl.getUniformLocation(prog, "u_samplerNight")!;
         this.u_samplerBlend = gl.getUniformLocation(prog, "u_samplerBlend")!;
 
-        gl.useProgram(prog);
-        this.blendTexture.setUniform(this.u_samplerBlend);
 
         // Initialise requests for day / night.
         this.dayTexture.updateTextureUrl("day.jpg", () => {
@@ -105,6 +106,10 @@ export default class EarthProgram extends Program {
             this.gl.useProgram(prog);
             this.nightTexture.setUniform(this.u_samplerNight);
         });
+
+        this.updateBlend(128);
+        gl.useProgram(prog);
+        this.blendTexture.setUniform(this.u_samplerBlend);
     }
 
     updateBlend(height: number = 64) {
@@ -181,11 +186,11 @@ export default class EarthProgram extends Program {
 
         this.blendTexture.updateTexture(arr, width, height);
         // this.blendTexture.updateTexture(new Uint8Array(
-        //     [0, 255, 0, 0,
-        //     0, 0, 0, 255,
-        //     0, 0, 0, 255,
-        //     0, 0, 255, 255]
-        // ), 4, 4);
+        //     [0, 255, 0, 0,0, 255, 0, 0,
+        //      0, 0, 0, 255,0, 0, 0, 255,
+        //      0, 0, 0, 255,0, 0, 0, 255,
+        //      0, 0, 255, 255, 0, 0, 255, 255]
+        // ), 8, 4);
     }
 
     render(globalModel: Matrix, globalView: Matrix, globalProjection: Matrix) {
@@ -203,7 +208,14 @@ export default class EarthProgram extends Program {
 
         // The samplers may need to be bound here.
         // Update our blend.
-        this.updateBlend();
+        // We keep a counter to not update the blend EVERY FRAME.
+        // This still causes stuttering if the resolution is too high!
+        // Solution: don't animate the blend.
+        // this.updateBlendCount++;
+        // if (this.updateBlendCount == 30) {
+        //     this.updateBlend();
+        //     this.updateBlendCount = 0;
+        // }
 
         this.dayTexture.bind();
         this.nightTexture.bind();

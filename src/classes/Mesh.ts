@@ -29,7 +29,7 @@ export default class Mesh {
 
     getIndexBuffer(gl: WebGLRenderingContext) {
         // hopefully Uint16s are enough
-        return new Buffer(gl, new Uint16Array(this.vertices), gl.ELEMENT_ARRAY_BUFFER, gl.UNSIGNED_SHORT);        
+        return new Buffer(gl, new Uint16Array(this.indices), gl.ELEMENT_ARRAY_BUFFER, gl.UNSIGNED_SHORT);        
     }
 
     getTexCoordBuffer(gl: WebGLRenderingContext) {

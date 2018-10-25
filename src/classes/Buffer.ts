@@ -4,7 +4,7 @@ export default class Buffer {
     // gl.ARRAY_BUFFER, gl.ELEMENT_ARRAY_BUFFER, etc.
     target: GLenum;
     // gl.FLOAT, etc.
-    type?: GLenum;
+    type: GLenum;
     size?: 1 | 2 | 3 | 4;
 
     /**
@@ -12,10 +12,10 @@ export default class Buffer {
      * @param gl The current rendering context.
      * @param data The data to put in the buffer.
      * @param target The binding point (like gl.ARRAY_BUFFER, gl.ELEMENT_ARRAY_BUFFER)
-     * @param type What the type of the buffer is (gl.FLOAT, gl.UNSIGNED_INT, etc.)
+     * @param type What the type of the buffer is (gl.FLOAT, gl.UNSIGNED_SHORT, etc.)
      * @param size Number of components per vertex attribute (if using as vertex buffer).
      */
-    constructor(gl: WebGLRenderingContext, data: ArrayBuffer | ArrayBufferView, target: GLenum, type?: GLenum, size?: 1 | 2 | 3 | 4) {
+    constructor(gl: WebGLRenderingContext, data: ArrayBuffer | ArrayBufferView, target: GLenum, type: GLenum, size?: 1 | 2 | 3 | 4) {
         this.gl = gl;
         const buffer = gl.createBuffer();
         if (buffer === null) {

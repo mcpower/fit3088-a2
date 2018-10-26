@@ -7,7 +7,8 @@ type Vec3 = [number, number, number];
 type TriangleIndices = Vec3;
 
 /**
- * A general mesh, not associated with any program.
+ * A general mesh, not associated with any WebGLRenderingContext.
+ * Stores the data needed to create the buffers if needed.
  */
 export default class Mesh {
     constructor(

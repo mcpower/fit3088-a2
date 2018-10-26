@@ -25,6 +25,9 @@ function getPos(left: number, right: number, num: number) {
     return (num - left) / (right - left);
 }
 
+/**
+ * The program to render the earth.
+ */
 export default class EarthProgram extends Program {
     radius: number;
     scaleMatrix: Matrix;

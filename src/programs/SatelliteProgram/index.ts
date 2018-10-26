@@ -12,8 +12,7 @@ import DateStore from "../../classes/DateStore";
 import { SATELLITE_SCALE, SATELLITE_DIFFUSE, SATELLITE_AMBIENT, SATELLITE_AMBIENT_SELECTED } from "../../constants";
 
 /**
- * Draws a single mesh one or more times.
- * Mesh is untextured.
+ * Draws a satellite mesh multiple times, based on the Satellite class.
  */
 export default class MeshProgram extends Program {
     mesh: Mesh;

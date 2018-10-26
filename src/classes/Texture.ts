@@ -1,3 +1,8 @@
+/**
+ * A wrapper for WebGLTexture.
+ * Also stores which texture unit it should be bound to!
+ * Can use any TexImageSource, or a UInt8Array for a greyscale iamge.
+ */
 export default class Texture {
     gl: WebGLRenderingContext;
     texture: WebGLTexture;

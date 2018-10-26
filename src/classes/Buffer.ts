@@ -1,3 +1,7 @@
+/**
+ * A class wrapping a WebGLBuffer.
+ * Contains many useful helper methods.
+ */
 export default class Buffer {
     gl: WebGLRenderingContext
     buffer: WebGLBuffer;

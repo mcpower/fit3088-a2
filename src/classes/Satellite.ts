@@ -46,6 +46,11 @@ function getClosestDistance(point: MV.Vector, ray: {fromPoint: MV.Vector, toPoin
     return {dist, t};
 }
 
+/**
+ * A satellite, wrapping around satellite.js's SatRec.
+ * Stores everything related to the satellite, including its name and
+ * whether it has been selected.
+ */
 export default class Satellite {
     satrec: SatRec;
     name: string;

@@ -1,5 +1,9 @@
 import { Vector, Matrix, scalem, mult, rotateX, rotateY, rotateZ, translate } from "../lib/MV";
 
+/**
+ * A general class for model transforms.
+ * Currently not used.
+ */
 export default class ModelTransform {
     // apply scaling, then rotations, then translations
     // translation MUST be applied last,

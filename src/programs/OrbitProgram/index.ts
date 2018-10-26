@@ -12,10 +12,17 @@ import DateStore from "../../classes/DateStore";
 import { SATELLITE_SCALE, ORBIT_COLOR_SELECTED, ORBIT_COLOR } from "../../constants";
 import { flatten } from "../../utils";
 
+/**
+ * The program to render ALL orbits.
+ */
 export default class OrbitProgram extends Program {
+    // We want to change the colour of the currently selected satellite.
+    // However, we don't want to push the same vertices to the GPU every time
+    // we want to render.
     // The vertices of the satellite orbits won't change between renders.
     // All we need to do is change the COLOR of each orbit if it is selected.
-    // Therefore, we can keep a global vertex buffer
+    // Therefore, we can keep a global vertex buffer, and simply alter the
+    // index buffer depending on which satellite is currently being rendered!
     vertexBuffer: Buffer;
     // and simply modify the indices when rendering.
     satellites: {

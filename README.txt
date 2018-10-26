@@ -15,6 +15,9 @@ IS NOT RUNNABLE, as it requires the use of imports. Please use "bundle.js" to
 run the code.
 There is also the webpacked bundle, but it is much harder to review. I would
 highly recommend reviewing the TypeScript code in "src" if possible.
+It is recommend to use the text editor "VS Code". VS Code will allow for very
+good TypeScript exploration, including the inspection of variable types and
+jumping to definitions / uses of variables.
 
 All libraries used are in the "src/lib" folder. I have modified them slightly
 for my use, including the addition of types for TypeScript. Of note are the
@@ -52,8 +55,11 @@ Some cool things in this assignment:
 - The selected satellite is highlighted in red, and its orbit is also highlighted
   in red.
 - The day/night texture is blended between dusk and dawn.
-
-The internal co-ordinate system is in kilometers.
+- The internal co-ordinate system is in kilometers, and gets transformed into
+  more sensible co-ordinates using a global model matrix. This ensures that
+  calculations are very straightforward, and the scale of the earth w.r.t.
+  the satellite orbits is kept.
+- Satellites are displayed bigger than real life to ensure that they are clickable.
 
 ---------
 COMPILING

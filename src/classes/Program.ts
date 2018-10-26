@@ -1,4 +1,3 @@
-import Context from "./Context";
 import initShaders from "../lib/initShaders";
 import { Matrix } from "../lib/MV";
 

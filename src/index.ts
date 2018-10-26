@@ -1,11 +1,7 @@
-import * as satellite from "./lib/satellite";
 import * as OBJ from "./lib/webgl-obj-loader";
 import Mesh from "./classes/Mesh";
-import Program from "./classes/Program";
 import Context from "./classes/Context";
 import SatelliteProgram from "./programs/SatelliteProgram";
-import { mat4, scalem } from "./lib/MV";
-import * as MV from "./lib/MV";
 import EarthProgram from "./programs/EarthProgram";
 import DateStore from "./classes/DateStore";
 import { EARTH_RADIUS_GL, EARTH_RADIUS_KM } from "./constants";
@@ -49,7 +45,7 @@ window.addEventListener("load", () => {
         // Initiate the request for the GPS positions.
         // Note that OBJ.downloadMeshes internally uses fetch(),
         // so we may as well use fetch() here.
-        const satRequest = (async () => {
+        (async () => {
             const r = await fetch("gps-ops.txt");
             const text = await r.text();
             // Gets and parses all the satellites into Satellite[].

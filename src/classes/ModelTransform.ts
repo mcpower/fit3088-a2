@@ -1,4 +1,4 @@
-import { Vector, Matrix, scalem, mult, rotateX, rotateY, rotateZ, translate } from "../lib/MV";
+import { Matrix, scalem, mult, rotateX, rotateY, rotateZ, translate } from "../lib/MV";
 
 /**
  * A general class for model transforms.

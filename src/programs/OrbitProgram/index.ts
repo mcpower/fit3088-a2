@@ -1,6 +1,4 @@
 import Program from "../../classes/Program";
-import Mesh from "../../classes/Mesh";
-import Context from "../../classes/Context";
 import initShaders from "../../lib/initShaders";
 import vertexShader from "./vertex.glsl";
 import fragmentShader from "./fragment.glsl";
@@ -8,8 +6,7 @@ import { Matrix } from "../../lib/MV";
 import Buffer from "../../classes/Buffer";
 import * as MV from "../../lib/MV";
 import Satellite from "../../classes/Satellite";
-import DateStore from "../../classes/DateStore";
-import { SATELLITE_SCALE, ORBIT_COLOR_SELECTED, ORBIT_COLOR } from "../../constants";
+import { ORBIT_COLOR_SELECTED, ORBIT_COLOR } from "../../constants";
 import { flatten } from "../../utils";
 
 /**

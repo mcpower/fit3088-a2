@@ -28,6 +28,7 @@ export function pickSatellite(
     satellites.forEach(sat => {
         const {dist, t} = sat.getDistanceFromRay(date, ray);
         if (dist < SATELLITE_PICK_RADIUS && t < bestTime) {
+            bestTime = t;
             toReturn = sat;
         }
     })

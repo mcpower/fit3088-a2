@@ -8,6 +8,7 @@ import { mat4, scalem } from "./lib/MV";
 import * as MV from "./lib/MV";
 import EarthProgram from "./programs/EarthProgram";
 import DateStore from "./classes/DateStore";
+import { EARTH_RADIUS_GL, EARTH_RADIUS_KM } from "./constants";
 
 interface Sat {
     name: string;
@@ -96,8 +97,6 @@ window.addEventListener("load", () => {
     const context = Context.fromCanvas(canvas);
     // const prog = Program.fromShaders(context.gl, "", "");
 
-    const EARTH_RADIUS_KM = 6371;
-    const EARTH_RADIUS_GL = 0.5;
     const scaleFactor = EARTH_RADIUS_GL / EARTH_RADIUS_KM;
     context.model = scalem(scaleFactor, scaleFactor, scaleFactor);
     

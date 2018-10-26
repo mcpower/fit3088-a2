@@ -37,8 +37,16 @@ export default class Texture {
 
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
         this.bind();
-        // TODO: enable mipmaps and aniso... filtering
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+        const ext = gl.getExtension("EXT_texture_filter_anisotropic");
+        if (ext === null) {
+            // fall back to a linear filter
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        } else {
+            // use anisotropic filtering
+            gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, 4);
+        }
+
         if (image instanceof Uint8Array) {
             if (width === undefined || height === undefined) {
                 throw new Error("width/height undefined");
@@ -47,6 +55,8 @@ export default class Texture {
         } else {
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
         }
+
+        gl.generateMipmap(gl.TEXTURE_2D);
 
         gl.bindTexture(gl.TEXTURE_2D, null); // Unbind texture
     }

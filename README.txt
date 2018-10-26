@@ -1,7 +1,20 @@
+To see the compiled version of the assignment, please go into the "dist" folder
+and check out "index.html". You will need to run a web server, as requests
+will be made to get various things. The assignment submission should have
+an already-compiled version of the assignment - the "dist" folder should have
+a "bundle.js" file.
+
 This entire assignment has been written in TypeScript, a very strict variant
 of JavaScript. As a result, everything is type checked to ensure that there
 are no type errors, and "use strict" is enabled by default due to the strictness
 of the checking.
+
+If you would like to strictly review JavaScript code, a compiled version of the
+source code to ES2016 JavaScript is available in "dist/js". Note that this code
+IS NOT RUNNABLE, as it requires the use of imports. Please use "bundle.js" to
+run the code.
+There is also the webpacked bundle, but it is much harder to review. I would
+highly recommend reviewing the TypeScript code in "src" if possible.
 
 All libraries used are in the "src/lib" folder. I have modified them slightly
 for my use, including the addition of types for TypeScript. Of note are the
@@ -41,3 +54,18 @@ Some cool things in this assignment:
 - The day/night texture is blended between dusk and dawn.
 
 The internal co-ordinate system is in kilometers.
+
+---------
+COMPILING
+---------
+
+To compile the TypeScript code to JavaScript and bundle it, be sure to install
+all dev dependencies:
+
+$ npm install
+
+and then run Webpack:
+
+$ npm run build
+
+This will compile the source code to "dist/bundle.js".

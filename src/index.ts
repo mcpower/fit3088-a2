@@ -10,6 +10,7 @@ import EarthProgram from "./programs/EarthProgram";
 import DateStore from "./classes/DateStore";
 import { EARTH_RADIUS_GL, EARTH_RADIUS_KM } from "./constants";
 import Satellite from "./classes/Satellite";
+import OrbitProgram from "./programs/OrbitProgram";
 
 window.addEventListener("load", () => {
     const canvas = <HTMLCanvasElement>document.getElementById("gl-canvas");
@@ -38,6 +39,9 @@ window.addEventListener("load", () => {
             const text = await r.text();
             const s = Satellite.fromTleStrings(ds, text);
             sp.satellites = s;
+
+            const op = new OrbitProgram(context.gl, [s[0]]);
+            context.programs.push(op);
         })();
     });
     console.log(context.gl);

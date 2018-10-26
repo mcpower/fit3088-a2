@@ -9,7 +9,7 @@ import * as MV from "./lib/MV";
 import EarthProgram from "./programs/EarthProgram";
 import DateStore from "./classes/DateStore";
 import { EARTH_RADIUS_GL, EARTH_RADIUS_KM } from "./constants";
-import Satellite from "./classes/Satellite";
+import Satellite, { pickSatellite } from "./classes/Satellite";
 import OrbitProgram from "./programs/OrbitProgram";
 
 window.addEventListener("load", () => {
@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
     
     const ds = new DateStore();
     context.addRenderCallback(() => {
-        ds.offset(1000 * 60);
+        // ds.offset(1000 * 60);
     });
     const ep = new EarthProgram(context.gl, ds, EARTH_RADIUS_KM);
     context.programs.push(ep);
@@ -40,8 +40,14 @@ window.addEventListener("load", () => {
 
             const op = new OrbitProgram(context.gl, s);
             context.programs.push(op);
+            
+            canvas.addEventListener("click", function(ev) {
+                const ray = context.getRay(ev.offsetX, ev.offsetY);
+                console.log(pickSatellite(ds.date, s, ray));
+            });
         })();
     });
+
 
     context.render();
 })

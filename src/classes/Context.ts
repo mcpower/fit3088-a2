@@ -1,7 +1,7 @@
 import Program from "./Program";
 import WebGLUtils from "../lib/webgl-utils";
 import * as MV from "../lib/MV";
-import { vec3, Matrix } from "../lib/MV";
+import { vec3, vec4, Matrix } from "../lib/MV";
 
 /**
  * The WebGLRenderingContext and all related rendering.
@@ -17,6 +17,8 @@ export default class Context {
 
     renderCallbacks: (() => void)[];
 
+    eye: MV.Vector;
+
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;
         gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
@@ -30,8 +32,9 @@ export default class Context {
         const fov = 70;
 
         this.model = MV.scalem(1, 1, 1);
+        this.eye = vec3(0, 0, 1 / Math.tan(fov / 180 * Math.PI / 2));
         this.view = MV.lookAt(
-            vec3(0, 0, 1 / Math.tan(fov / 180 * Math.PI / 2)),
+            this.eye,
             vec3(0, 0, 0),
             vec3(0, 1, 0)
         );
@@ -43,13 +46,46 @@ export default class Context {
         );
     }
 
+    /**
+     * Gets a ray in "kilometer space", given the (x, y) coordinates
+     * (from the top-left corner).
+     * @param x The x co-ord from 0 to width.
+     * @param y The y co-ord from 0 to height.
+     */
+    getRay(x: number, y: number) {
+        const {drawingBufferWidth: width, drawingBufferHeight: height} = this.gl;
+
+        // Taken from
+        // http://antongerdelan.net/opengl/raycasting.html
+
+        const rayNds = vec3(
+            (2 * x) / width - 1,
+            1 - (2 * y) / height,
+            1
+        );
+
+        const rayClip = vec4(rayNds[0], rayNds[1], -1, 1);
+
+        let rayEye = MV.mult(MV.inverse(this.projection), rayClip);
+        rayEye = vec4(rayEye[0], rayEye[1], -1, 0);
+
+        const rayWorld = MV.mult(MV.inverse(this.view), rayEye);
+        
+        const eye = vec4(this.eye, 1);
+        const toPoint = MV.add(eye, rayWorld);
+
+        const modelInv = MV.inverse(this.model);;
+
+        return {fromPoint: vec3(MV.mult(modelInv, eye)), toPoint: vec3(MV.mult(modelInv, toPoint))};
+    }
+
     addRenderCallback(f: () => void) {
         this.renderCallbacks.push(f);
     }
 
     render = () => {
         const gl = this.gl;
-        this.model = MV.mult(MV.rotateY(0.1), this.model);
+        this.model = MV.mult(MV.rotateY(0), this.model);
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear color and depth buffers
 

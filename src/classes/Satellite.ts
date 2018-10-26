@@ -1,8 +1,35 @@
 import DateStore from "./DateStore";
 import { SatRec } from "../lib/satellite/types";
 import * as satellite from "../lib/satellite";
-import { EARTH_RADIUS_KM, EPS } from "../constants";
+import { EARTH_RADIUS_KM, EPS, SATELLITE_PICK_RADIUS } from "../constants";
 import * as MV from "../lib/MV";
+
+export function pickSatellite(
+    date: Date,
+    satellites: Satellite[],
+    ray: {fromPoint: MV.Vector, toPoint: MV.Vector}
+): Satellite | undefined {
+    let bestTime = Infinity;
+    let toReturn: Satellite | undefined = undefined;
+    satellites.forEach(sat => {
+        const {dist, t} = sat.getDistanceFromRay(date, ray);
+        if (dist < SATELLITE_PICK_RADIUS && t < bestTime) {
+            toReturn = sat;
+        }
+    })
+    return toReturn;
+}
+
+function getClosestDistance(point: MV.Vector, ray: {fromPoint: MV.Vector, toPoint: MV.Vector}) {
+    const {fromPoint, toPoint} = ray;
+    const aToB = MV.subtract(toPoint, fromPoint);
+    const thisToStart = MV.subtract(fromPoint, point);
+    const t = -MV.dot(thisToStart, aToB) / MV.dot(aToB, aToB);
+
+    const closestPoint = MV.add(fromPoint, MV.scale(t, aToB));
+    const dist = MV.length(MV.subtract(point, closestPoint));
+    return {dist, t};
+}
 
 export default class Satellite {
     satrec: SatRec;
@@ -113,6 +140,14 @@ export default class Satellite {
             out.push([radius * x, radius * y, radius * z]);
         }
         return out;
+    }
+
+    getDistanceFromRay(date: Date, ray: {fromPoint: MV.Vector, toPoint: MV.Vector}) {
+        // http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
+        const {x, y, z, radius} = this.getPos(date);
+        const point = MV.vec3(radius * x, radius * y, radius * z);
+
+        return getClosestDistance(point, ray);
     }
 
     static fromTLE(tle1: string, tle2: string, name?: string): Satellite {

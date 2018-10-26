@@ -5,21 +5,18 @@ import { EARTH_RADIUS_KM, EPS } from "../constants";
 import * as MV from "../lib/MV";
 
 export default class Satellite {
-    ds: DateStore;
     satrec: SatRec;
 
-    constructor(ds: DateStore, satrec: SatRec) {
-        this.ds = ds;
+    constructor(satrec: SatRec) {
         this.satrec = satrec;
     }
 
-    getLatLonHeight(date?: Date) {
-        const actualDate = (date === undefined) ? this.ds.date : date;
-        const positionAndVelocity = satellite.propagate(this.satrec, actualDate);
+    getLatLonHeight(date: Date) {
+        const positionAndVelocity = satellite.propagate(this.satrec, date);
         if (positionAndVelocity instanceof Array || positionAndVelocity.position === false) {
             throw new Error("Propagation failed.");
         }
-        const gmst = satellite.gstime(this.ds.date);
+        const gmst = satellite.gstime(date);
         // ECI coordinates
         const positionEci = positionAndVelocity.position;
         // geodetic coordinates
@@ -31,7 +28,7 @@ export default class Satellite {
      * actual sphere it's on.
      * @param date The specific date to get the position of.
      */
-    getPos(date?: Date) {
+    getPos(date: Date) {
         // NOTE: this shares a lot of code
         const {latitude, longitude, height} = this.getLatLonHeight(date);
         const radius = EARTH_RADIUS_KM + height;
@@ -47,7 +44,7 @@ export default class Satellite {
         return {x, y, z, radius};
     }
 
-    getTransform(date?: Date): MV.Matrix {
+    getTransform(date: Date): MV.Matrix {
         // get x/y/z/radius
         const {x, y, z, radius} = this.getPos(date);
 
@@ -116,8 +113,8 @@ export default class Satellite {
         return out;
     }
 
-    static fromTLE(ds: DateStore, tle1: string, tle2: string): Satellite {
-        return new Satellite(ds, satellite.twoline2satrec(tle1, tle2));
+    static fromTLE(tle1: string, tle2: string): Satellite {
+        return new Satellite(satellite.twoline2satrec(tle1, tle2));
     }
 
     static fromTleStrings(ds: DateStore, tleStrings: string): Satellite[] {
@@ -144,6 +141,6 @@ export default class Satellite {
                 });
             }
         }
-        return satellites.map(({tle1, tle2}) => Satellite.fromTLE(ds, tle1, tle2));
+        return satellites.map(({tle1, tle2}) => Satellite.fromTLE(tle1, tle2));
     }
 }

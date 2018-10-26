@@ -109,16 +109,13 @@ window.addEventListener("load", () => {
         const m = Mesh.fromObj(mesh.model);
         // const m = Mesh.makeSphere(16);
         console.log("satellite:", m);
-        const mp = new MeshProgram(context.gl, m);
+        const mp = new MeshProgram(context.gl, m, ds);
         mp.allTransform = MV.scalem(200, 200, 200);
         context.programs.push(mp);
         const satRequest = (async () => {
             const r = await fetch("gps-ops.txt");
             const text = await r.text();
             const s = Satellite.fromTleStrings(ds, text);
-            console.log(s);
-            console.log(s[0].getPos());
-            console.log(s[0].getTransform());
             mp.satellites = s;
         })();
     });

@@ -8,6 +8,7 @@ import { Matrix } from "../../lib/MV";
 import Buffer from "../../classes/Buffer";
 import * as MV from "../../lib/MV";
 import Satellite from "../../classes/Satellite";
+import DateStore from "../../classes/DateStore";
 
 /**
  * Draws a single mesh one or more times.
@@ -17,6 +18,7 @@ export default class MeshProgram extends Program {
     mesh: Mesh;
     allTransform: Matrix;
 
+    ds: DateStore;
     satellites: Satellite[];
 
     vertexBuffer: Buffer;
@@ -28,10 +30,11 @@ export default class MeshProgram extends Program {
     u_modelViewMatrix: WebGLUniformLocation;
     u_projectionMatrix: WebGLUniformLocation;
 
-    constructor(gl: WebGLRenderingContext, mesh: Mesh) {
+    constructor(gl: WebGLRenderingContext, mesh: Mesh, ds: DateStore) {
         const prog = initShaders(gl, vertexShader, fragmentShader);
         super(gl, prog);
 
+        this.ds = ds;
         this.allTransform = MV.mat4();
 
         this.mesh = mesh;
@@ -68,7 +71,7 @@ export default class MeshProgram extends Program {
             // then the global transform.
 
             // TODO: should this be flipped?
-            const combinedModel = MV.mult(globalModel, MV.mult(sat.getTransform(), this.allTransform));
+            const combinedModel = MV.mult(globalModel, MV.mult(sat.getTransform(this.ds.date), this.allTransform));
             const modelView = MV.mult(globalView, combinedModel);
 
             gl.uniformMatrix4fv(this.u_modelViewMatrix, false, MV.flatten(modelView));

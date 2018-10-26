@@ -60,6 +60,8 @@ Some cool things in this assignment:
   calculations are very straightforward, and the scale of the earth w.r.t.
   the satellite orbits is kept.
 - Satellites are displayed bigger than real life to ensure that they are clickable.
+- The satellite speed is adjustable, instead of having either "animation on" and
+  "animation off".
 
 ---------
 COMPILING

@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
             const s = Satellite.fromTleStrings(ds, text);
             sp.satellites = s;
 
-            const op = new OrbitProgram(context.gl, [s[0]]);
+            const op = new OrbitProgram(context.gl, s);
             context.programs.push(op);
         })();
     });

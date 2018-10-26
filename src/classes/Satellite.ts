@@ -6,9 +6,11 @@ import * as MV from "../lib/MV";
 
 export default class Satellite {
     satrec: SatRec;
+    name: string;
 
-    constructor(satrec: SatRec) {
+    constructor(satrec: SatRec, name?: string) {
         this.satrec = satrec;
+        this.name = name || "";
     }
 
     getLatLonHeight(date: Date) {
@@ -113,8 +115,8 @@ export default class Satellite {
         return out;
     }
 
-    static fromTLE(tle1: string, tle2: string): Satellite {
-        return new Satellite(satellite.twoline2satrec(tle1, tle2));
+    static fromTLE(tle1: string, tle2: string, name?: string): Satellite {
+        return new Satellite(satellite.twoline2satrec(tle1, tle2), name);
     }
 
     static fromTleStrings(ds: DateStore, tleStrings: string): Satellite[] {
@@ -141,6 +143,6 @@ export default class Satellite {
                 });
             }
         }
-        return satellites.map(({tle1, tle2}) => Satellite.fromTLE(tle1, tle2));
+        return satellites.map(({tle1, tle2, name}) => Satellite.fromTLE(tle1, tle2, name));
     }
 }

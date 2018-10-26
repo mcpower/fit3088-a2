@@ -24,3 +24,29 @@ declare function eciToGeodetic(eci: Point, gmst: number): {
   latitude: number;
   height: number;
 };
+
+export {
+  // constants,
+
+  // Propagation
+  propagate,
+  // sgp4,
+  twoline2satrec,
+
+  gstime,
+  // gstimeFromJday,
+  gstimeFromDate,
+  // jday,
+  // invjday,
+
+  // dopplerFactor,
+
+  // Coordinate transforms
+  // degreesLat,
+  // degreesLong,
+  // geodeticToEcf,
+  eciToGeodetic,
+  // eciToEcf,
+  // ecfToEci,
+  // ecfToLookAngles,
+};

@@ -8,7 +8,7 @@ export const SATELLITE_PICK_RADIUS = 1500;
 
 export const SATELLITE_DIFFUSE = [0.4, 0.4, 0.4];
 export const SATELLITE_AMBIENT = [0.4, 0.4, 0.4];
-export const SATELLITE_AMBIENT_SELECTED = [0.8, 0.2, 0.2];
+export const SATELLITE_AMBIENT_SELECTED = [0.9, 0.2, 0.2];
 
 export const ORBIT_COLOR = [0.2, 0.2, 0.2];
 export const ORBIT_COLOR_SELECTED = [0.9, 0.2, 0.2];

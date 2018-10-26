@@ -36,5 +36,7 @@ Some cool things in this assignment:
   "longitude latitude" rectangular grid, it instead generates a grid like a rhombus.
   This increases the resolution of the sphere, especially when generating spheres
   with a low number of rows / columns.
+- The selected satellite is highlighted in red, and its orbit is also highlighted
+  in red.
 
 The internal co-ordinate system is in kilometers.

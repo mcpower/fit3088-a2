@@ -73,6 +73,13 @@ Some cool things in this assignment:
   per satellite. This is required, as certain satellites may need to have a
   different coloured orbit (if it is selected).
 - The light position is hard-coded to prevent unnecessary pushes to the GPU.
+- The satellite picking works by casting a ray then finding the minimal distance
+  between every satellite and the ray. It filters that list to get a list of
+  satellites within 2000 meters from the line (see constants.ts) and picks the
+  one closest to the camera.
+- The satellite picking above does not pick satellites through the earth! If
+  the ray hits the earth, it recognises that and does not pick any satellites
+  behind the earth.
 
 ---------
 COMPILING

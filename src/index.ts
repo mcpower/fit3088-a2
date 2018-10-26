@@ -40,10 +40,19 @@ window.addEventListener("load", () => {
 
             const op = new OrbitProgram(context.gl, s);
             context.programs.push(op);
+
+            let lastPicked: Satellite | undefined = undefined;
             
             canvas.addEventListener("click", function(ev) {
+                if (lastPicked !== undefined) {
+                    lastPicked.selected = false;
+                }
+
                 const ray = context.getRay(ev.offsetX, ev.offsetY);
-                console.log(pickSatellite(ds.date, s, ray));
+                lastPicked = pickSatellite(ds.date, s, ray);
+                if (lastPicked !== undefined) {
+                    lastPicked.selected = true;
+                }
             });
         })();
     });

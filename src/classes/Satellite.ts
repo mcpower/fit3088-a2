@@ -48,10 +48,12 @@ function getClosestDistance(point: MV.Vector, ray: {fromPoint: MV.Vector, toPoin
 export default class Satellite {
     satrec: SatRec;
     name: string;
+    selected: boolean;
 
     constructor(satrec: SatRec, name?: string) {
         this.satrec = satrec;
         this.name = name || "";
+        this.selected = false;
     }
 
     getLatLonHeight(date: Date) {

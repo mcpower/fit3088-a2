@@ -30,5 +30,11 @@ matrices, which are passed to each program separately. This is to ensure that
 all programs are rendering using the same MVP matrices (barring any model
 transformations that a Program can apply to its own geometry).
 
+Some cool things in this assignment:
+- The sphere generation generates spheres using the "longitude latitude" technique,
+  but also *shifts* every latitude row based on the row. Instead of generating a 
+  "longitude latitude" rectangular grid, it instead generates a grid like a rhombus.
+  This increases the resolution of the sphere, especially when generating spheres
+  with a low number of rows / columns.
 
 The internal co-ordinate system is in kilometers.

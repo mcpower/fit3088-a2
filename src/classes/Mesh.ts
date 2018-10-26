@@ -95,10 +95,13 @@ export default class Mesh {
             // How big is our circle on this plane?
             // That should go from 0 to 1 to 0.
             const planeCircleRadius = Math.cos(lat);
-            
-            for (let col = 0; col <= columns; col++) {
+            for (let colLoop = 0; colLoop <= columns; colLoop++) {
+                // If we instead create a "rhombus" where every column is offset
+                // by 0.5 * row, the faces of the sphere will be TRIANGULAR
+                // instead of RECTANGULAR! This will give a much smoother
+                // appearance, especially for low values of "rows".
+                const col = colLoop + row * 0.5;
                 // We start off "from the back".
-                // TODO: offset this by 1/2 a "notch"
                 const lon = (2 * Math.PI * col / columns) - (Math.PI);
 
                 // If lon = 0, z should be 1 and x = 0.
@@ -110,6 +113,8 @@ export default class Mesh {
 
                 // Now, what are the texture coordinates?
                 // Remember that the BOTTOM LEFT is (0, 0)!
+                // Note that texU may be bigger than 1. That is okay, as the
+                // texture should "wrap around".
                 const texU = col / columns;
                 const texV = 1 - (row / rows);
                 texRow.push([texU, texV]);

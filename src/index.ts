@@ -30,8 +30,6 @@ window.addEventListener("load", () => {
     
     OBJ.downloadMeshes({"model": "satellite.obj"}, (mesh) => {
         const m = Mesh.fromObj(mesh.model);
-        // const m = Mesh.makeSphere(16);
-        console.log("satellite:", m);
         const sp = new SatelliteProgram(context.gl, m, ds);
         context.programs.push(sp);
         const satRequest = (async () => {
@@ -44,11 +42,6 @@ window.addEventListener("load", () => {
             context.programs.push(op);
         })();
     });
-    console.log(context.gl);
-
-    console.log(context);
-
-
 
     context.render();
 })

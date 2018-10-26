@@ -96,24 +96,23 @@ window.addEventListener("load", () => {
     const context = Context.fromCanvas(canvas);
     // const prog = Program.fromShaders(context.gl, "", "");
 
-    OBJ.downloadMeshes({"model": "satellite.obj"}, (mesh) => {
-        return;
-        const m = Mesh.fromObj(mesh.model);
-        // const m = Mesh.makeSphere(16);
-        console.log("satellite:", m);
-        const mp = new MeshProgram(context.gl, m);
-        mp.transforms.push(scalem(0.1, 0.1, 0.1));
-        context.programs.push(mp);
-    });
     const EARTH_RADIUS_KM = 6371;
     const EARTH_RADIUS_GL = 0.5;
     const scaleFactor = EARTH_RADIUS_GL / EARTH_RADIUS_KM;
     context.model = scalem(scaleFactor, scaleFactor, scaleFactor);
-
+    
     const ds = new DateStore();
     const ep = new EarthProgram(context.gl, ds, EARTH_RADIUS_KM);
     context.programs.push(ep);
-
+    
+    OBJ.downloadMeshes({"model": "satellite.obj"}, (mesh) => {
+        const m = Mesh.fromObj(mesh.model);
+        // const m = Mesh.makeSphere(16);
+        console.log("satellite:", m);
+        const mp = new MeshProgram(context.gl, m);
+        mp.transforms.push(MV.mult(MV.translate(EARTH_RADIUS_KM + 2000, 0, 0), MV.scalem(200, 200, 200)));
+        context.programs.push(mp);
+    });
     console.log(context.gl);
 
     console.log(context);

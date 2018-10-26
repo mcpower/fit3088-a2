@@ -7,6 +7,7 @@ import fragmentShader from "./fragment.glsl";
 import { Matrix } from "../../lib/MV";
 import Buffer from "../../classes/Buffer";
 import * as MV from "../../lib/MV";
+import Satellite from "../../classes/Satellite";
 
 /**
  * Draws a single mesh one or more times.
@@ -15,9 +16,8 @@ import * as MV from "../../lib/MV";
 export default class MeshProgram extends Program {
     mesh: Mesh;
     allTransform: Matrix;
-    // A list of transforms to apply on matrices.
-    // Would recommend using ModelTransform.
-    transforms: Matrix[];
+
+    satellites: Satellite[];
 
     vertexBuffer: Buffer;
     normalBuffer: Buffer;
@@ -35,7 +35,7 @@ export default class MeshProgram extends Program {
         this.allTransform = MV.mat4();
 
         this.mesh = mesh;
-        this.transforms = [];
+        this.satellites = [];
 
         // Write all mesh data to the WebGL buffer objects.
         this.vertexBuffer = mesh.getVertexBuffer(gl);
@@ -61,14 +61,14 @@ export default class MeshProgram extends Program {
         // gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, this.indexBuffer.type, 0);
 
 
-        this.transforms.forEach(localModel => {
+        this.satellites.forEach(sat => {
             // calculate matrices
             // we'd rather calculate matrices in JS than on the GPU
             // We want to first to the all transform, then the local model,
             // then the global transform.
 
             // TODO: should this be flipped?
-            const combinedModel = MV.mult(globalModel, MV.mult(localModel, this.allTransform));
+            const combinedModel = MV.mult(globalModel, MV.mult(sat.getTransform(), this.allTransform));
             const modelView = MV.mult(globalView, combinedModel);
 
             gl.uniformMatrix4fv(this.u_modelViewMatrix, false, MV.flatten(modelView));

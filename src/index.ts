@@ -119,7 +119,7 @@ window.addEventListener("load", () => {
             console.log(s);
             console.log(s[0].getPos());
             console.log(s[0].getTransform());
-            mp.transforms.push(...s.map(sat => sat.getTransform()));
+            mp.satellites = s;
         })();
     });
     console.log(context.gl);

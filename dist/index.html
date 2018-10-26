@@ -22,6 +22,21 @@
                 </td>
                 <td>
                     <div>Selected satellite: <span id="selected-satellite">none</span></div>
+                    <div>
+                        <label for="rotation-y">Rotation (Y)</label>
+                        <input type="range" id="rotation-y" name="rotation-y" value="0" min="-180"
+                                max="180" step="0.1" />
+                    </div>
+                    <div>
+                        <label for="rotation-x">Rotation (X)</label>
+                        <input type="range" id="rotation-x" name="rotation-x" value="0" min="-90"
+                                max="90" step="0.1" />
+                    </div>
+                    <div>
+                        <label for="satellite-speed">Satellite speed</label>
+                        <input type="range" id="satellite-speed" name="satellite-speed" value="0" min="0"
+                                max="100000" step="1" />
+                    </div>
                 </td>
             </tr>
         </table>

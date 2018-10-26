@@ -11,13 +11,19 @@ export default class Context {
     gl: WebGLRenderingContext;
     programs: Program[];
 
-    model: Matrix;
+    // Model will be calculated based on the values given.
     view: Matrix;
     projection: Matrix;
 
     renderCallbacks: (() => void)[];
 
     eye: MV.Vector;
+
+    scale: number;
+    rotateX: number;
+    rotateY: number;
+    rotateZ: number;
+
 
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;
@@ -31,7 +37,6 @@ export default class Context {
 
         const fov = 70;
 
-        this.model = MV.scalem(1, 1, 1);
         this.eye = vec3(0, 0, 1 / Math.tan(fov / 180 * Math.PI / 2));
         this.view = MV.lookAt(
             this.eye,
@@ -44,6 +49,19 @@ export default class Context {
             0.1,
             50
         );
+
+        this.scale = 1;
+        this.rotateX = 0;
+        this.rotateY = 0;
+        this.rotateZ = 0;
+    }
+
+    getModel() {
+        let model = MV.scalem(this.scale, this.scale, this.scale);
+        model = MV.mult(model, MV.rotateX(this.rotateX));
+        model = MV.mult(model, MV.rotateY(this.rotateY));
+        model = MV.mult(model, MV.rotateZ(this.rotateZ));
+        return model;
     }
 
     /**
@@ -74,7 +92,7 @@ export default class Context {
         const eye = vec4(this.eye, 1);
         const toPoint = MV.add(eye, rayWorld);
 
-        const modelInv = MV.inverse(this.model);;
+        const modelInv = MV.inverse(this.getModel());
 
         return {fromPoint: vec3(MV.mult(modelInv, eye)), toPoint: vec3(MV.mult(modelInv, toPoint))};
     }
@@ -85,7 +103,6 @@ export default class Context {
 
     render = () => {
         const gl = this.gl;
-        this.model = MV.mult(MV.rotateY(0), this.model);
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear color and depth buffers
 
@@ -93,7 +110,7 @@ export default class Context {
 
         this.programs.forEach(prog => {
             gl.useProgram(prog.program);
-            prog.render(this.model, this.view, this.projection);
+            prog.render(this.getModel(), this.view, this.projection);
         });
 
         window.requestAnimationFrame(this.render);

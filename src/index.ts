@@ -19,11 +19,15 @@ window.addEventListener("load", () => {
     // const prog = Program.fromShaders(context.gl, "", "");
 
     const scaleFactor = EARTH_RADIUS_GL / EARTH_RADIUS_KM;
-    context.model = scalem(scaleFactor, scaleFactor, scaleFactor);
+    context.scale = scaleFactor;
     
     const ds = new DateStore();
+
+    // The timestep for satellites.
+    // Adjustable via HTML.
+    let dt = 0;
     context.addRenderCallback(() => {
-        // ds.offset(1000 * 60);
+        ds.offset(dt);
     });
     const ep = new EarthProgram(context.gl, ds, EARTH_RADIUS_KM);
     context.programs.push(ep);
@@ -64,4 +68,23 @@ window.addEventListener("load", () => {
 
 
     context.render();
+
+    // Set up HTML controls
+    const rotationXEl = <HTMLInputElement> document.getElementById("rotation-x")!;
+    rotationXEl.addEventListener("input", () => {
+        const val = +rotationXEl.value;
+        context.rotateX = val;
+    });
+
+    const rotationYEl = <HTMLInputElement> document.getElementById("rotation-y")!;
+    rotationYEl.addEventListener("input", () => {
+        const val = +rotationYEl.value;
+        context.rotateY = val;
+    });
+
+    const satSpeedEl = <HTMLInputElement> document.getElementById("satellite-speed")!;
+    satSpeedEl.addEventListener("input", () => {
+        const val = +satSpeedEl.value;
+        dt = val;
+    });
 })

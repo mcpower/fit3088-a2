@@ -20,7 +20,7 @@ export default class Context {
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;
         gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-        gl.clearColor(0.6, 0.6, 0.6, 1.0);
+        gl.clearColor(0.05, 0.05, 0.05, 1.0);
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
         gl.cullFace(gl.BACK);

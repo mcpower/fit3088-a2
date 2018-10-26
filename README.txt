@@ -62,6 +62,15 @@ Some cool things in this assignment:
 - Satellites are displayed bigger than real life to ensure that they are clickable.
 - The satellite speed is adjustable, instead of having either "animation on" and
   "animation off".
+- Mipmaps and anisotropic filtering is enabled in "src/classes/Texture.ts".
+- Backface culling is enabled in "src/classes/Context.ts".
+- Normals for the earth are implicitly defined to be the same as the vertex
+  co-ordinates.
+- All satellites rendered use the same satellite geometry, and the satellite
+  geometry is only pushed once to the GPU.
+- The orbit vertices are only pushed once to the GPU, and the indices are pushed
+  per satellite. This is required, as certain satellites may need to have a
+  different coloured orbit (if it is selected).
 
 ---------
 COMPILING

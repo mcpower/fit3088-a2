@@ -176,7 +176,7 @@ export default class Satellite {
         return new Satellite(satellite.twoline2satrec(tle1, tle2), name);
     }
 
-    static fromTleStrings(ds: DateStore, tleStrings: string): Satellite[] {
+    static fromTleStrings(tleStrings: string): Satellite[] {
         let satellites: {
             name: string;
             tle1: string;

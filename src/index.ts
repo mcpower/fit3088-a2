@@ -49,7 +49,7 @@ window.addEventListener("load", () => {
             const r = await fetch("gps-ops.txt");
             const text = await r.text();
             // Gets and parses all the satellites into Satellite[].
-            const s = Satellite.fromTleStrings(ds, text);
+            const s = Satellite.fromTleStrings(text);
             sp.satellites = s;
 
             // Now that we have the satellites, we can get the orbits too.

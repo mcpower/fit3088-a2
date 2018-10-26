@@ -22,4 +22,39 @@ export default class Satellite {
         // geodetic coordinates
         return satellite.eciToGeodetic(positionEci, gmst);
     }
+
+    getTransform(): Matrix {
+        // first, get position lat/long/height
+    }
+
+    static fromTLE(ds: DateStore, tle1: string, tle2: string): Satellite {
+        return new Satellite(ds, satellite.twoline2satrec(tle1, tle2));
+    }
+
+    static fromTleStrings(ds: DateStore, tleStrings: string): Satellite[] {
+        let satellites: {
+            name: string;
+            tle1: string;
+            tle2: string;
+        }[] = [];
+        let lines = tleStrings.split(/\r?\n/);
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (line.length === 0) {
+                break;
+            }
+            if (line.charAt(0) === "1") {
+                satellites[satellites.length - 1].tle1 = line;
+            } else if (line.charAt(0) === "2") {
+                satellites[satellites.length - 1].tle2 = line;
+            } else {
+                satellites.push({
+                    name: line,
+                    tle1: "",
+                    tle2: ""
+                });
+            }
+        }
+        return satellites.map(({tle1, tle2}) => Satellite.fromTLE(ds, tle1, tle2));
+    }
 }

@@ -9,21 +9,25 @@ import Buffer from "../../classes/Buffer";
 import * as MV from "../../lib/MV";
 import Satellite from "../../classes/Satellite";
 import DateStore from "../../classes/DateStore";
-import { SATELLITE_SCALE } from "../../constants";
+import { SATELLITE_SCALE, ORBIT_COLOR_SELECTED, ORBIT_COLOR } from "../../constants";
 import { flatten } from "../../utils";
 
-/**
- * Draws a single mesh one or more times.
- * Mesh is untextured.
- */
 export default class OrbitProgram extends Program {
+    // The vertices of the satellite orbits won't change between renders.
+    // All we need to do is change the COLOR of each orbit if it is selected.
+    // Therefore, we can keep a global vertex buffer
     vertexBuffer: Buffer;
-    indexBuffer: Buffer;
+    // and simply modify the indices when rendering.
+    satellites: {
+        sat: Satellite,
+        indexBuffer: Buffer,
+        indexCount: number
+    }[];
 
     a_vertexPosition: number;
     u_modelViewProjectionMatrix: WebGLUniformLocation;
 
-    indexCount: number;
+    u_color: WebGLUniformLocation;
 
     constructor(gl: WebGLRenderingContext, satellites: Satellite[]) {
         const prog = initShaders(gl, vertexShader, fragmentShader);
@@ -32,32 +36,37 @@ export default class OrbitProgram extends Program {
         let vertices: [number, number, number][] = [];
         // Note that we're using gl.LINES to draw,
         // so our indices must come in pairs.
-        let indices: number[] = [];
+        this.satellites = [];
 
         satellites.forEach(sat => {
             const satVertices = sat.getOrbit();
             const offset = vertices.length;
             vertices.push(...satVertices);
+
+            let indices: number[] = [];
             for (let i = 0; i < satVertices.length - 1; i++) {
                 indices.push(offset + i, offset + i+1);
             }
             indices.push(offset + satVertices.length - 1, offset + 0);
+
+            const indexBuffer = new Buffer(gl, new Uint16Array(indices), gl.ELEMENT_ARRAY_BUFFER, gl.UNSIGNED_SHORT);
+            const indexCount = indices.length;
+            this.satellites.push({sat, indexBuffer, indexCount});
         })
         
         this.vertexBuffer = new Buffer(gl, new Float32Array(flatten(vertices)), gl.ARRAY_BUFFER, gl.FLOAT, 3);
-        this.indexBuffer = new Buffer(gl, new Uint16Array(indices), gl.ELEMENT_ARRAY_BUFFER, gl.UNSIGNED_SHORT);
-        this.indexCount = indices.length;
 
         this.a_vertexPosition = gl.getAttribLocation(prog, "a_vertexPosition");
         this.u_modelViewProjectionMatrix = gl.getUniformLocation(prog, "u_modelViewProjectionMatrix")!;
+        this.u_color = gl.getUniformLocation(prog, "u_color")!;
     }
 
     render(globalModel: Matrix, globalView: Matrix, globalProjection: Matrix) {
         const gl = this.gl;
         this.vertexBuffer.initAttrib(this.a_vertexPosition);
-        this.indexBuffer.bind();
 
         // Calculate the full MVP matrix.
+        // This won't change between satellites.
         const mvp = MV.mult(globalProjection, MV.mult(globalView, globalModel));
         gl.uniformMatrix4fv(
             this.u_modelViewProjectionMatrix,
@@ -65,6 +74,12 @@ export default class OrbitProgram extends Program {
             MV.flatten(mvp)
         );
 
-        gl.drawElements(gl.LINES, this.indexCount, this.indexBuffer.type, 0);
+        // We want to draw FOR EVERY SATELLITE.
+        this.satellites.forEach(({sat, indexBuffer, indexCount}) => {
+            indexBuffer.bind();
+            gl.uniform3fv(this.u_color, sat.selected ? ORBIT_COLOR_SELECTED : ORBIT_COLOR);
+            gl.drawElements(gl.LINES, indexCount, indexBuffer.type, 0);
+        })
+
     }
 }

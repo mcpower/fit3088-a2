@@ -67,7 +67,8 @@ export default class OrbitProgram extends Program {
 
     render(globalModel: Matrix, globalView: Matrix, globalProjection: Matrix) {
         const gl = this.gl;
-        this.vertexBuffer.initAttrib(this.a_vertexPosition);
+        // vertexBuffer needs to be re-initiated on Firefox FOR EVERY DRAW
+        // CALL. I don't know why...
 
         // Calculate the full MVP matrix.
         // This won't change between satellites.
@@ -80,6 +81,9 @@ export default class OrbitProgram extends Program {
 
         // We want to draw FOR EVERY SATELLITE.
         this.satellites.forEach(({sat, indexBuffer, indexCount}) => {
+            // Re-initiate vertexBuffer for Firefox.
+            this.vertexBuffer.initAttrib(this.a_vertexPosition);
+
             indexBuffer.bind();
             gl.uniform3fv(this.u_color, sat.selected ? ORBIT_COLOR_SELECTED : ORBIT_COLOR);
             gl.drawElements(gl.LINES, indexCount, indexBuffer.type, 0);

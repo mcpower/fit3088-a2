@@ -42,6 +42,8 @@ window.addEventListener("load", () => {
             context.programs.push(op);
 
             let lastPicked: Satellite | undefined = undefined;
+
+            const selectedSatEl = document.getElementById("selected-satellite")!;
             
             canvas.addEventListener("click", function(ev) {
                 if (lastPicked !== undefined) {
@@ -52,6 +54,9 @@ window.addEventListener("load", () => {
                 lastPicked = pickSatellite(ds.date, s, ray);
                 if (lastPicked !== undefined) {
                     lastPicked.selected = true;
+                    selectedSatEl.innerText = lastPicked.name;
+                } else {
+                    selectedSatEl.innerText = "none";
                 }
             });
         })();

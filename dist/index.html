@@ -2,12 +2,28 @@
 <html>
     <head>
         <title>GPS Satellite Positions</title>
-
+        <style>
+            body {
+                font-size:18px;
+                line-height:1.6;
+                color:#222;
+            }
+        </style>
         <script src="bundle.js"></script>
     </head>
     <body>
-        <canvas id="gl-canvas" width="1024" height="768">
-            Your browser does not support the HTML5 canvas element.
-        </canvas>
+        <!-- Mind the table alignment! -->
+        <table>
+            <tr>
+                <td>
+                    <canvas id="gl-canvas" width="1024" height="768">
+                        Your browser does not support the HTML5 canvas element.
+                    </canvas>
+                </td>
+                <td>
+                    <div>Selected satellite: <span id="selected-satellite">none</span></div>
+                </td>
+            </tr>
+        </table>
     </body>
 </html>

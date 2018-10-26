@@ -86,21 +86,20 @@ export default class Mesh {
             const texRow: Vec2[] = [];
 
             // We begin at the top row and go down.
-            const lat = Math.PI * row / rows;
+            // From pi/2 to -pi/2.
+            const lat = (Math.PI / 2) - (Math.PI * row / rows);
 
             // The plane should go from 1 down to -1.
-            // So that's cos from 0 to pi.
-            const y = Math.cos(lat);
+            const y = Math.sin(lat);
 
             // How big is our circle on this plane?
             // That should go from 0 to 1 to 0.
-            // That's sin!
-            const planeCircleRadius = Math.sin(lat);
+            const planeCircleRadius = Math.cos(lat);
             
             for (let col = 0; col <= columns; col++) {
                 // We start off "from the back".
                 // TODO: offset this by 1/2 a "notch"
-                const lon = (2 * Math.PI * col / columns) - (Math.PI / 2);
+                const lon = (2 * Math.PI * col / columns) - (Math.PI);
 
                 // If lon = 0, z should be 1 and x = 0.
                 // Therefore, z is cos, and x is sin!

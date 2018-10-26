@@ -3,7 +3,7 @@ import * as OBJ from "./lib/webgl-obj-loader";
 import Mesh from "./classes/Mesh";
 import Program from "./classes/Program";
 import Context from "./classes/Context";
-import MeshProgram from "./programs/SatelliteProgram";
+import SatelliteProgram from "./programs/SatelliteProgram";
 import { mat4, scalem } from "./lib/MV";
 import * as MV from "./lib/MV";
 import EarthProgram from "./programs/EarthProgram";
@@ -31,14 +31,13 @@ window.addEventListener("load", () => {
         const m = Mesh.fromObj(mesh.model);
         // const m = Mesh.makeSphere(16);
         console.log("satellite:", m);
-        const mp = new MeshProgram(context.gl, m, ds);
-        mp.allTransform = MV.scalem(200, 200, 200);
-        context.programs.push(mp);
+        const sp = new SatelliteProgram(context.gl, m, ds);
+        context.programs.push(sp);
         const satRequest = (async () => {
             const r = await fetch("gps-ops.txt");
             const text = await r.text();
             const s = Satellite.fromTleStrings(ds, text);
-            mp.satellites = s;
+            sp.satellites = s;
         })();
     });
     console.log(context.gl);

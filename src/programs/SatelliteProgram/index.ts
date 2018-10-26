@@ -9,6 +9,7 @@ import Buffer from "../../classes/Buffer";
 import * as MV from "../../lib/MV";
 import Satellite from "../../classes/Satellite";
 import DateStore from "../../classes/DateStore";
+import { SATELLITE_SCALE } from "../../constants";
 
 /**
  * Draws a single mesh one or more times.
@@ -35,7 +36,7 @@ export default class MeshProgram extends Program {
         super(gl, prog);
 
         this.ds = ds;
-        this.allTransform = MV.mat4();
+        this.allTransform = MV.scalem(SATELLITE_SCALE, SATELLITE_SCALE, SATELLITE_SCALE);
 
         this.mesh = mesh;
         this.satellites = [];

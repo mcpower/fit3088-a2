@@ -13,8 +13,9 @@ export default class Satellite {
         this.satrec = satrec;
     }
 
-    getPos() {
-        const positionAndVelocity = satellite.propagate(this.satrec, this.ds.date);
+    getLatLonHeight(date?: Date) {
+        const actualDate = (date === undefined) ? this.ds.date : date;
+        const positionAndVelocity = satellite.propagate(this.satrec, actualDate);
         if (positionAndVelocity instanceof Array || positionAndVelocity.position === false) {
             throw new Error("Propagation failed.");
         }
@@ -24,11 +25,15 @@ export default class Satellite {
         // geodetic coordinates
         return satellite.eciToGeodetic(positionEci, gmst);
     }
-
-    getTransform(): MV.Matrix {
-        // first, get position lat/long/radius
-        // this lat/long is already in radians
-        const {latitude, longitude, height} = this.getPos();
+    
+    /**
+     * Get the (x, y, z) positions on the unit sphere and the "radius" of the
+     * actual sphere it's on.
+     * @param date The specific date to get the position of.
+     */
+    getPos(date?: Date) {
+        // NOTE: this shares a lot of code
+        const {latitude, longitude, height} = this.getLatLonHeight(date);
         const radius = EARTH_RADIUS_KM + height;
 
         // then get x/y/z
@@ -39,6 +44,12 @@ export default class Satellite {
 
         const z = planeCircleRadius * Math.cos(longitude);
         const x = planeCircleRadius * Math.sin(longitude);
+        return {x, y, z, radius};
+    }
+
+    getTransform(date?: Date): MV.Matrix {
+        // get x/y/z/radius
+        const {x, y, z, radius} = this.getPos(date);
 
         // so we now have a vector corresponding to where it is.
         // TODO: do this Vector & [...] in MV.ts
@@ -91,6 +102,18 @@ export default class Satellite {
                 0, 0, 0, 1
             ));
         }
+    }
+
+    getOrbit() {
+        const d = new Date();
+        let out: [number, number, number][] = [];
+        // sample once every 30 minutes
+        for (let dt = 0; dt < 24 * 60 * 60 * 1000; dt += 30 * 60 * 1000) {
+            const newD = new Date(d.getTime() + dt);
+            const {x, y, z, radius} = this.getPos(newD);
+            out.push([radius * x, radius * y, radius * z]);
+        }
+        return out;
     }
 
     static fromTLE(ds: DateStore, tle1: string, tle2: string): Satellite {

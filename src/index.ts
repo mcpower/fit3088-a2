@@ -87,4 +87,13 @@ window.addEventListener("load", () => {
         const val = +satSpeedEl.value;
         dt = val;
     });
+
+    const resetRotEl = <HTMLButtonElement> document.getElementById("reset-rotation")!;
+    resetRotEl.addEventListener("click", () => {
+        context.rotateX = 0;
+        context.rotateY = 0;
+        context.rotateZ = 0;
+        rotationXEl.value = "0";
+        rotationYEl.value = "0";
+    });
 })

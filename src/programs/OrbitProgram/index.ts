@@ -41,6 +41,7 @@ export default class OrbitProgram extends Program {
             for (let i = 0; i < satVertices.length - 1; i++) {
                 indices.push(offset + i, offset + i+1);
             }
+            indices.push(offset + satVertices.length - 1, offset + 0);
         })
         
         this.vertexBuffer = new Buffer(gl, new Float32Array(flatten(vertices)), gl.ARRAY_BUFFER, gl.FLOAT, 3);

@@ -66,6 +66,11 @@ export default class Texture {
         gl.bindTexture(gl.TEXTURE_2D, null); // Unbind texture
     }
 
+    /**
+     * Asynchronously updates the texture using a URL.
+     * @param url The url.
+     * @param callback An optional callback which is called when it is loaded.
+     */
     updateTextureUrl(url: string, callback?: (image: HTMLImageElement) => void) {
         let image = new Image();
         if (!image) {
@@ -88,6 +93,7 @@ export default class Texture {
     }
 
     /**
+     * Sets a uniform to this buffer.
      * Be sure to use the associated program's uniform first!
      * @param uniform The uniform to set.
      */

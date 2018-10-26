@@ -111,6 +111,10 @@ export default class EarthProgram extends Program {
         this.blendTexture.setUniform(this.u_samplerBlend);
     }
 
+    /**
+     * Update the blending texture.
+     * @param height The height of the updated texture.
+     */
     updateBlend(height: number = 64) {
         const width = height * 2;
         let arr = new Uint8Array(width * height);

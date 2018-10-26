@@ -15,6 +15,7 @@ export default class Context {
     view: Matrix;
     projection: Matrix;
 
+    // A list of callbacks to be called before every render.
     renderCallbacks: (() => void)[];
 
     eye: MV.Vector;
@@ -56,6 +57,9 @@ export default class Context {
         this.rotateZ = 0;
     }
 
+    /**
+     * Gets the current model from scale and rotates.
+     */
     getModel() {
         let model = MV.scalem(this.scale, this.scale, this.scale);
         model = MV.mult(model, MV.rotateX(this.rotateX));
@@ -97,10 +101,17 @@ export default class Context {
         return {fromPoint: vec3(MV.mult(modelInv, eye)), toPoint: vec3(MV.mult(modelInv, toPoint))};
     }
 
+    /**
+     * Adds a function to be called before every render.
+     * @param f The function to be added.
+     */
     addRenderCallback(f: () => void) {
         this.renderCallbacks.push(f);
     }
 
+    /**
+     * The render loop.
+     */
     render = () => {
         const gl = this.gl;
 

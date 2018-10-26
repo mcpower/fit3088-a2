@@ -16,6 +16,9 @@ export default class ModelTransform {
 
     }
 
+    /**
+     * Gets the matrix associated with this transform.
+     */
     getMatrix(): Matrix {
         let modelMatrix = scalem(this.scale, this.scale, this.scale);
         modelMatrix = mult(rotateX(this.rotation[0]), modelMatrix);

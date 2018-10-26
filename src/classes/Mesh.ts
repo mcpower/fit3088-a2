@@ -37,6 +37,9 @@ export default class Mesh {
         return new Buffer(gl, new Float32Array(this.texCoords), gl.ARRAY_BUFFER, gl.FLOAT, 2);
     }
 
+    /**
+     * Alternate constructor with strongly typed arguments.
+     */
     static fromTyped(
         vertices: Vec3[],
         normals: Vec3[],
@@ -46,6 +49,10 @@ export default class Mesh {
         return new Mesh(flatten(vertices), flatten(normals), flatten(indices), flatten(texCoords));
     }
 
+    /**
+     * Converts an OBJ mesh into a Mesh class.
+     * @param obj The OBJ mesh.
+     */
     static fromObj(obj: OBJ.Mesh): Mesh {
         return new Mesh(obj.vertices, obj.vertexNormals, obj.indices, obj.textures);
     }
@@ -165,6 +172,10 @@ export default class Mesh {
         return Mesh.fromTyped(flattenedVertices, flattenedVertices, indices, flattenedTexCoords);
     }
 
+    /**
+     * Creates a cube.
+     * Taken from one of the FIT3088 tutorials.
+     */
     static makeCube(): Mesh {
         // Create a cube
         //    v6----- v5

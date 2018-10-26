@@ -35,7 +35,13 @@ export function pickSatellite(
     return toReturn;
 }
 
+/**
+ * Gets the distance and "time" of the closest point of a ray to a given point.
+ * @param point The point.
+ * @param ray The ray.
+ */
 function getClosestDistance(point: MV.Vector, ray: {fromPoint: MV.Vector, toPoint: MV.Vector}) {
+    // http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
     const {fromPoint, toPoint} = ray;
     const aToB = MV.subtract(toPoint, fromPoint);
     const thisToStart = MV.subtract(fromPoint, point);
@@ -62,6 +68,10 @@ export default class Satellite {
         this.selected = false;
     }
 
+    /**
+     * Gets the longitude / latitude / height of the satellite.
+     * @param date The date.
+     */
     getLatLonHeight(date: Date) {
         const positionAndVelocity = satellite.propagate(this.satrec, date);
         if (positionAndVelocity instanceof Array || positionAndVelocity.position === false) {
@@ -95,6 +105,11 @@ export default class Satellite {
         return {x, y, z, radius};
     }
 
+    /**
+     * Gets the transform to transform the satellite model to the required
+     * position.
+     * @param date The specific date.
+     */
     getTransform(date: Date): MV.Matrix {
         // get x/y/z/radius
         const {x, y, z, radius} = this.getPos(date);
@@ -152,6 +167,11 @@ export default class Satellite {
         }
     }
 
+    /**
+     * Gets a list of Vec3s representing the orbit.
+     * This list should be cyclic, that is, the last vertex connects to the first
+     * vertex.
+     */
     getOrbit() {
         const d = new Date();
         let out: [number, number, number][] = [];
@@ -164,18 +184,30 @@ export default class Satellite {
         return out;
     }
 
+    /**
+     * Gets the distance and "time" of the closest point of a ray to this
+     * satellite.
+     * @param date The specific date to get the position of. 
+     * @param ray The ray to use.
+     */
     getDistanceFromRay(date: Date, ray: {fromPoint: MV.Vector, toPoint: MV.Vector}) {
-        // http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
         const {x, y, z, radius} = this.getPos(date);
         const point = MV.vec3(radius * x, radius * y, radius * z);
 
         return getClosestDistance(point, ray);
     }
 
+    /**
+     * Gets a Satellite from a single TLE.
+     */
     static fromTLE(tle1: string, tle2: string, name?: string): Satellite {
         return new Satellite(satellite.twoline2satrec(tle1, tle2), name);
     }
-
+    
+    /**
+     * Gets Satellites from a TLE file.
+     * @param tleStrings A string with a list of TLE strings.
+     */
     static fromTleStrings(tleStrings: string): Satellite[] {
         let satellites: {
             name: string;

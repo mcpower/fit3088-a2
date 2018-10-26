@@ -71,6 +71,7 @@ Some cool things in this assignment:
 - The orbit vertices are only pushed once to the GPU, and the indices are pushed
   per satellite. This is required, as certain satellites may need to have a
   different coloured orbit (if it is selected).
+- The light position is hard-coded to prevent unnecessary pushes to the GPU.
 
 ---------
 COMPILING

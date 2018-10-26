@@ -15,7 +15,6 @@ varying vec2 v_texCoord;
 
 
 void main() {
-    // ambient light
     float diffuseFactor = dot((v_normal), (v_lightVector));
     diffuseFactor = clamp(diffuseFactor, 0.0, 1.0);
 
@@ -29,5 +28,7 @@ void main() {
 
     // note that no specular is needed
     // let's tone down diffuseFactor by a bit
+    // this is equivalent to having an ambient color of 0.1 * displayColor
+    // and having a diffuse color of 0.9 * displayColor
     gl_FragColor = vec4((0.1 + 0.9 * diffuseFactor) * displayColor, 1.0);
 }

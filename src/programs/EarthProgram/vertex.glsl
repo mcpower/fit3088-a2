@@ -21,6 +21,7 @@ void main() {
     // we aren't doing any shearing / nonuniform scaling
     // so we can do this instead.
     // make sure to set a_normal's last component to be zero!
+    // additionally, the normal vector IS the vertex position.
     v_normal = normalize((u_modelViewMatrix * vec4(a_vertexPosition, 0)).xyz);
     v_texCoord = a_texCoord;
 }

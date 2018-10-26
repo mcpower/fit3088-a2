@@ -14,6 +14,7 @@ import * as MV from "../../lib/MV";
  */
 export default class MeshProgram extends Program {
     mesh: Mesh;
+    allTransform: Matrix;
     // A list of transforms to apply on matrices.
     // Would recommend using ModelTransform.
     transforms: Matrix[];
@@ -30,6 +31,8 @@ export default class MeshProgram extends Program {
     constructor(gl: WebGLRenderingContext, mesh: Mesh) {
         const prog = initShaders(gl, vertexShader, fragmentShader);
         super(gl, prog);
+
+        this.allTransform = MV.mat4();
 
         this.mesh = mesh;
         this.transforms = [];
@@ -58,12 +61,14 @@ export default class MeshProgram extends Program {
         // gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, this.indexBuffer.type, 0);
 
 
-        this.transforms.forEach(model => {
+        this.transforms.forEach(localModel => {
             // calculate matrices
             // we'd rather calculate matrices in JS than on the GPU
+            // We want to first to the all transform, then the local model,
+            // then the global transform.
 
             // TODO: should this be flipped?
-            const combinedModel = MV.mult(globalModel, model);
+            const combinedModel = MV.mult(globalModel, MV.mult(localModel, this.allTransform));
             const modelView = MV.mult(globalView, combinedModel);
 
             gl.uniformMatrix4fv(this.u_modelViewMatrix, false, MV.flatten(modelView));

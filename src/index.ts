@@ -3,7 +3,7 @@ import * as OBJ from "./lib/webgl-obj-loader";
 import Mesh from "./classes/Mesh";
 import Program from "./classes/Program";
 import Context from "./classes/Context";
-import MeshProgram from "./programs/MeshProgram";
+import MeshProgram from "./programs/SatelliteProgram";
 import { mat4, scalem } from "./lib/MV";
 import * as MV from "./lib/MV";
 import EarthProgram from "./programs/EarthProgram";
@@ -110,7 +110,8 @@ window.addEventListener("load", () => {
         // const m = Mesh.makeSphere(16);
         console.log("satellite:", m);
         const mp = new MeshProgram(context.gl, m);
-        mp.transforms.push(MV.mult(MV.translate(EARTH_RADIUS_KM + 2000, 0, 0), MV.scalem(200, 200, 200)));
+        mp.allTransform = MV.scalem(200, 200, 200);
+        mp.transforms.push(MV.translate(-(EARTH_RADIUS_KM + 2000), 0, 0));
         context.programs.push(mp);
     });
     console.log(context.gl);

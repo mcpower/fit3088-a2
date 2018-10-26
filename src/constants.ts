@@ -8,7 +8,7 @@ export const EPS = 1e-9;
 // How much to scale the satellites by.
 export const SATELLITE_SCALE = 150;
 // How big the satellites are when picking them.
-export const SATELLITE_PICK_RADIUS = 1500;
+export const SATELLITE_PICK_RADIUS = 2000;
 
 export const SATELLITE_DIFFUSE = [0.4, 0.4, 0.4];
 export const SATELLITE_AMBIENT = [0.4, 0.4, 0.4];

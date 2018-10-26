@@ -88,7 +88,7 @@ function printSample() {
     console.log(pos);
 }
 
-// window.addEventListener("load", () => makeRequest("gps-ops.txt"));
+window.addEventListener("load", () => makeRequest("gps-ops.txt"));
 
 window.addEventListener("load", () => {
     const canvas = <HTMLCanvasElement>document.getElementById("gl-canvas");
@@ -105,9 +105,13 @@ window.addEventListener("load", () => {
         mp.transforms.push(scalem(0.1, 0.1, 0.1));
         context.programs.push(mp);
     });
+    const EARTH_RADIUS_KM = 6371;
+    const EARTH_RADIUS_GL = 0.5;
+    const scaleFactor = EARTH_RADIUS_GL / EARTH_RADIUS_KM;
+    context.model = scalem(scaleFactor, scaleFactor, scaleFactor);
 
     const ds = new DateStore();
-    const ep = new EarthProgram(context.gl, ds, 0.5);
+    const ep = new EarthProgram(context.gl, ds, EARTH_RADIUS_KM);
     context.programs.push(ep);
 
     console.log(context.gl);

@@ -9,6 +9,7 @@ import * as MV from "./lib/MV";
 import EarthProgram from "./programs/EarthProgram";
 import DateStore from "./classes/DateStore";
 import { EARTH_RADIUS_GL, EARTH_RADIUS_KM } from "./constants";
+import Satellite from "./classes/Satellite";
 
 interface Sat {
     name: string;
@@ -89,7 +90,7 @@ function printSample() {
     console.log(pos);
 }
 
-window.addEventListener("load", () => makeRequest("gps-ops.txt"));
+// window.addEventListener("load", () => makeRequest("gps-ops.txt"));
 
 window.addEventListener("load", () => {
     const canvas = <HTMLCanvasElement>document.getElementById("gl-canvas");
@@ -110,12 +111,22 @@ window.addEventListener("load", () => {
         console.log("satellite:", m);
         const mp = new MeshProgram(context.gl, m);
         mp.allTransform = MV.scalem(200, 200, 200);
-        mp.transforms.push(MV.translate(-(EARTH_RADIUS_KM + 2000), 0, 0));
         context.programs.push(mp);
+        const satRequest = (async () => {
+            const r = await fetch("gps-ops.txt");
+            const text = await r.text();
+            const s = Satellite.fromTleStrings(ds, text);
+            console.log(s);
+            console.log(s[0].getPos());
+            console.log(s[0].getTransform());
+            mp.transforms.push(...s.map(sat => sat.getTransform()));
+        })();
     });
     console.log(context.gl);
 
     console.log(context);
+
+
 
     context.render();
 })

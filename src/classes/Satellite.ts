@@ -1,6 +1,6 @@
 import DateStore from "./DateStore";
 import { SatRec } from "../lib/satellite/types";
-import satellite from "../lib/satellite";
+import * as satellite from "../lib/satellite";
 import { EARTH_RADIUS_KM, EPS } from "../constants";
 import * as MV from "../lib/MV";
 
@@ -82,7 +82,7 @@ export default class Satellite {
             );
             const rotation = MV.add(
                 MV.add(MV.mat3(), vMatrix),
-                MV.mult(MV.scalem(coeff, coeff, coeff), MV.mult(vMatrix, vMatrix))
+                MV.mult(MV.mat3(coeff), MV.mult(vMatrix, vMatrix))
             );
             return MV.mult(translation, MV.mat4(
                 rotation[0], 0,

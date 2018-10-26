@@ -15,6 +15,8 @@ export default class Context {
     view: Matrix;
     projection: Matrix;
 
+    renderCallbacks: (() => void)[];
+
     constructor(gl: WebGLRenderingContext) {
         this.gl = gl;
         gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
@@ -23,6 +25,7 @@ export default class Context {
         gl.enable(gl.CULL_FACE);
         gl.cullFace(gl.BACK);
         this.programs = [];
+        this.renderCallbacks = [];
 
         const fov = 70;
 
@@ -40,11 +43,17 @@ export default class Context {
         );
     }
 
+    addRenderCallback(f: () => void) {
+        this.renderCallbacks.push(f);
+    }
+
     render = () => {
         const gl = this.gl;
-        this.model = MV.mult(MV.rotateY(1), this.model);
+        this.model = MV.mult(MV.rotateY(0.1), this.model);
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear color and depth buffers
+
+        this.renderCallbacks.forEach(f => f());
 
         this.programs.forEach(prog => {
             gl.useProgram(prog.program);

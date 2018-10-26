@@ -102,6 +102,9 @@ window.addEventListener("load", () => {
     context.model = scalem(scaleFactor, scaleFactor, scaleFactor);
     
     const ds = new DateStore();
+    context.addRenderCallback(() => {
+        ds.offset(1000 * 60);
+    });
     const ep = new EarthProgram(context.gl, ds, EARTH_RADIUS_KM);
     context.programs.push(ep);
     

@@ -104,8 +104,8 @@ export default class Satellite {
     getOrbit() {
         const d = new Date();
         let out: [number, number, number][] = [];
-        // sample once every 30 minutes
-        for (let dt = 0; dt < 24 * 60 * 60 * 1000; dt += 30 * 60 * 1000) {
+        // sample once every 10 minutes
+        for (let dt = 0; dt < 24 * 60 * 60 * 1000; dt += 10 * 60 * 1000) {
             const newD = new Date(d.getTime() + dt);
             const {x, y, z, radius} = this.getPos(newD);
             out.push([radius * x, radius * y, radius * z]);

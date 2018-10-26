@@ -38,5 +38,6 @@ Some cool things in this assignment:
   with a low number of rows / columns.
 - The selected satellite is highlighted in red, and its orbit is also highlighted
   in red.
+- The day/night texture is blended between dusk and dawn.
 
 The internal co-ordinate system is in kilometers.

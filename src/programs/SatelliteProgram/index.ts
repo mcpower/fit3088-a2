@@ -60,9 +60,6 @@ export default class MeshProgram extends Program {
 
         // We're always going to have the same projection matrix.
         gl.uniformMatrix4fv(this.u_projectionMatrix, false, MV.flatten(globalProjection));
-        // const modelView = MV.mult(globalView, globalModel);
-        // gl.uniformMatrix4fv(this.u_modelViewMatrix, false, MV.flatten(modelView));
-        // gl.drawElements(gl.TRIANGLES, this.mesh.indices.length, this.indexBuffer.type, 0);
 
 
         this.satellites.forEach(sat => {

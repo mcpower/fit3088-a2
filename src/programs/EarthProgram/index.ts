@@ -25,10 +25,6 @@ function getPos(left: number, right: number, num: number) {
     return (num - left) / (right - left);
 }
 
-/**
- * Draws a single mesh one or more times.
- * Mesh is untextured.
- */
 export default class EarthProgram extends Program {
     radius: number;
     scaleMatrix: Matrix;
@@ -61,6 +57,7 @@ export default class EarthProgram extends Program {
     /**
      * Constructor.
      * @param gl The rendering context.
+     * @param dateStore The store for the dates.
      * @param earthRadius The radius of the earth in GL units.
      */
     constructor(gl: WebGLRenderingContext, dateStore: DateStore, radius: number) {
@@ -156,28 +153,6 @@ export default class EarthProgram extends Program {
                     val = 255;
                 }
                 
-                // if (now < dawn) {
-                //     val = 0;
-                // } else if (now < sunrise) {
-                    // // lerp between dawn and sunrise
-                    // val = Math.round(getPos(
-                    //     dawn.getTime(),
-                    //     sunrise.getTime(),
-                    //     now.getTime()
-                    // ) * 255);
-                // } else if (now < sunset) {
-                //     val = 255;
-                // } else if (now < dusk) {
-                    // // lerp between sunset and dusk
-                    // val = 255 - Math.round(getPos(
-                    //     sunset.getTime(),
-                    //     dusk.getTime(),
-                    //     now.getTime()
-                    // ) * 255);
-                // } else {
-                //     // after dusk
-                //     val = 0;
-                // }
 
                 arr[y * width + x] = now < sunrise || now > sunset ? 0 : 255;
                 arr[y * width + x] = val;
@@ -185,12 +160,6 @@ export default class EarthProgram extends Program {
         }
 
         this.blendTexture.updateTexture(arr, width, height);
-        // this.blendTexture.updateTexture(new Uint8Array(
-        //     [0, 255, 0, 0,0, 255, 0, 0,
-        //      0, 0, 0, 255,0, 0, 0, 255,
-        //      0, 0, 0, 255,0, 0, 0, 255,
-        //      0, 0, 255, 255, 0, 0, 255, 255]
-        // ), 8, 4);
     }
 
     render(globalModel: Matrix, globalView: Matrix, globalProjection: Matrix) {

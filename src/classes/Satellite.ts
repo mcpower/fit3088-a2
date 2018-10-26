@@ -4,12 +4,26 @@ import * as satellite from "../lib/satellite";
 import { EARTH_RADIUS_KM, EPS, SATELLITE_PICK_RADIUS } from "../constants";
 import * as MV from "../lib/MV";
 
+/**
+ * Picks the first satellite hit by the given ray.
+ * @param date The current date.
+ * @param satellites The satellites to pick from.
+ * @param ray The ray to base the pick from.
+ */
 export function pickSatellite(
     date: Date,
     satellites: Satellite[],
     ray: {fromPoint: MV.Vector, toPoint: MV.Vector}
 ): Satellite | undefined {
     let bestTime = Infinity;
+    // We can hit the earth too!
+    // See whether we do.
+    const {dist: earthDist, t: earthT} = getClosestDistance(MV.vec3(0, 0, 0), ray);
+    if (earthDist < EARTH_RADIUS_KM) {
+        // We hit the earth!
+        // Now, the earth will compete in the "best time" context :)
+        bestTime = earthT;
+    }
     let toReturn: Satellite | undefined = undefined;
     satellites.forEach(sat => {
         const {dist, t} = sat.getDistanceFromRay(date, ray);

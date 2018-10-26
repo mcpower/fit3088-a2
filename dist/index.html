@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="content-type" content="text/html; charset=windows-1252">
         <title>GPS Satellite Positions</title>
 
         <script src="bundle.js"></script>
@@ -10,31 +9,5 @@
         <canvas id="gl-canvas" width="1024" height="768">
             Your browser does not support the HTML5 canvas element.
         </canvas>
-
-        <div>
-            Have a look a the source code of this HTML file!<br><br>
-            This example code loads the file 'gps-ops.txt' containing multiple 
-            TLE records, which describe the position and movement of satellites.
-            The file is loaded asynchronously using an XMLHttpRequest. 
-            <br><br>
-            When the entire file is loaded, the <code>stateChange()</code> function 
-            is called, which calls <code>parseSatellites()</code>.  
-            <code>parseSatellites()</code> parses the TLE records and stores the
-            result in the global <code>satellites</code> array.
-            <br><br>
-            You can now call <code>satellitePosition()</code> to get the position of a satellite 
-            for a specific time. The current time is <br>
-            <code>var now = new Date();</code>
-            <br><br>
-            The code in <code>printSample()</code> illustrates how <code>satellitePosition()</code> can 
-            be used to get the satellite position 10 minutes from now. It uses
-            the first satellite in the <code>satellites</code> array. The 
-            <code>pos</code> object in <code>printSample()</code> contains the 
-            longitude, latitude and the distance from the globe centre in kilometres.
-            <br><br>
-            To find the geometry of the orbit of a satellite, increase dT in 
-            <code>printSample()</code>. A GPS satellite rotates around the entire 
-            globe in a little less than 24 hours.
-        </div>
     </body>
 </html>

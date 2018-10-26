@@ -54,7 +54,8 @@ Some cool things in this assignment:
   with a low number of rows / columns.
 - The selected satellite is highlighted in red, and its orbit is also highlighted
   in red.
-- The day/night texture is blended between dusk and dawn.
+- The day/night texture is blended between dusk and dawn. This results in a
+  strange graphical artifact on the north pole, for some reason.
 - The internal co-ordinate system is in kilometers, and gets transformed into
   more sensible co-ordinates using a global model matrix. This ensures that
   calculations are very straightforward, and the scale of the earth w.r.t.

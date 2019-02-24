@@ -8,8 +8,14 @@ import { EARTH_RADIUS_GL, EARTH_RADIUS_KM } from "./constants";
 import Satellite, { pickSatellite } from "./classes/Satellite";
 import OrbitProgram from "./programs/OrbitProgram";
 
+function isCanvas(canvas: HTMLElement): canvas is HTMLCanvasElement {
+    return (<HTMLCanvasElement>canvas).getContext !== undefined;
+}
+
 window.addEventListener("load", () => {
-    const canvas = <HTMLCanvasElement>document.getElementById("gl-canvas");
+    const canvas = document.getElementById("gl-canvas");
+    if (canvas === null) return;
+    if (!isCanvas(canvas)) return;
     
     const context = Context.fromCanvas(canvas);
 

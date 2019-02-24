@@ -16,7 +16,7 @@ Many libraries were used in this assignment:
 - [suncalc.js](https://github.com/mourner/suncalc)
 - [webgl-obj-loader](https://github.com/frenchtoast747/webgl-obj-loader) - note
   that this was before webgl-obj-loader was updated to use TypeScript
-- [various scripts](https://www.cs.unm.edu/~angel/WebGL/6E/Common/) from Angel's
+- [various scripts](https://www.cs.unm.edu/~angel/WebGL/7E/Common/) from Angel's
   WebGL book
 
 These libraries are all located in `src/lib` with the appropriate TypeScript
